@@ -41,9 +41,7 @@ export default function Navbar() {
       >
         <div className="nav-container">
           <div className="nav-brand">
-            <img src="/logo-s.jpg" alt="Sarobix" className="nav-logo-img" />
-            <div className="nav-brand-text">
-              <span className="logo-name">
+          <img src="/logo-new.png" alt="Sarobix" className="nav-logo-img" />              <span className="logo-name">
                 SAR<span className="o-part">O</span>B<span className="o-part">i</span>X
               </span>
               <span className="logo-sub">مهندس سارا گمراوی</span>
