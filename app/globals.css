@@ -426,4 +426,4 @@
     .features-grid { grid-template-columns:1fr 1fr; }
     .footer-grid { grid-template-columns:1fr; }
   }
-  
+  body { padding-top: 100px; }
