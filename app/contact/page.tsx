@@ -23,8 +23,8 @@ export default function ContactPage() {
   // TODO سارا: لینک و آیدی واقعی تلگرام و لینکدین رو جایگزین placeholder ها کن
   const socials = [
     { name: "اینستاگرام", handle: "@sarobix.dev", href: "https://instagram.com/sarobix.dev", color: "#E1306C", icon: "📸", bg: "#fff0f5" },
-    { name: "تلگرام", handle: "@sarobix", href: "https://t.me/sarobix", color: "#27AEEF", icon: "✈️", bg: "#f0f9ff" },
     { name: "لینکدین", handle: "sarobix", href: "https://linkedin.com/company/sarobix", color: "#0077B5", icon: "💼", bg: "#f0f7ff" },
+    { name: "تلگرام", handle: "@sarobix", href: "https://t.me/sarobix", color: "#27AEEF", icon: "✈️", bg: "#f0f9ff" },
     { name: "بله", handle: "@sarobix", href: "https://ble.ir/sarobix", color: "#28A745", icon: "🟢", bg: "#f0fff4" },
   ];
 

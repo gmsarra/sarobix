@@ -59,9 +59,6 @@ export default function Footer() {
 
 
 
-
-
-
 "use client";
 import Link from "next/link";
 
@@ -108,8 +105,8 @@ export default function Footer() {
         className="footer-grid"
       >
         {/* Brand column */}
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
+        <div className="footer-brand">
+          <div className="footer-brand-row" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
             <img src="/logo-main.png" alt="Sarobix" style={{ width: "44px", height: "44px", objectFit: "contain" }} />
             <div>
               <p style={{ fontWeight: 800, fontSize: "15px", margin: 0 }}>مهندس سارا گمراوی</p>
@@ -121,7 +118,7 @@ export default function Footer() {
           </p>
 
           {/* Social pills */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+          <div className="footer-brand-row" style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             {socials.map(s => (
               <a
                 key={s.name}
@@ -198,6 +195,9 @@ export default function Footer() {
       <style>{`
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; }
+          .footer-brand { text-align: center; }
+          .footer-brand-row { justify-content: center; }
+          .footer-brand p { margin-left: auto !important; margin-right: auto !important; }
         }
       `}</style>
     </footer>
