@@ -35,13 +35,13 @@ export default function Navbar() {
 
           <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1, justifyContent: "flex-end" }}>
             <Link href="/" style={linkStyle}>صفحه اصلی</Link>
-            <Link href="/courses" style={linkStyle}>دوره‌ها</Link>
+            <Link href="/courses" style={linkStyle}>دوره‌های آموزشی</Link>
             <Link href="/blog" style={linkStyle}>مقالات</Link>
           </div>
 
           <Link href="/" style={{ display: "flex", flexDirection: "column", alignItems: "center", textDecoration: "none", margin: "0 2rem", flexShrink: 0 }}>
             <img src="/logo-main.png" alt="Sarobix" style={{ width: "65px", height: "65px", objectFit: "contain" }} />
-            <span style={{ fontSize: "10px", color: "#aaa", marginTop: "2px", letterSpacing: "2px" }}>SAROBIX</span>
+            <span style={{ fontSize: "10px", color: "#aaa", marginTop: "2px", letterSpacing: "2px" }}></span>
           </Link>
 
           <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1, justifyContent: "flex-start" }}>
