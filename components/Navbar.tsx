@@ -30,7 +30,7 @@ export default function Navbar() {
 
         {/* DESKTOP */}
         <div style={{
-          maxWidth: "1200px", margin: "0 auto", padding: "0.8rem 2rem",
+          maxWidth: "1200px", margin: "0 auto", padding: "1.2rem 2rem",
           display: "flex", alignItems: "center", position: "relative",
         }} className="nav-desktop">
 
