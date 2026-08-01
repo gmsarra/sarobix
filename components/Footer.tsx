@@ -110,7 +110,7 @@ export default function Footer() {
             <img src="/logo-main.png" alt="Sarobix" style={{ width: "44px", height: "44px", objectFit: "contain" }} />
             <div>
               <p style={{ fontWeight: 800, fontSize: "15px", margin: 0 }}>مهندس سارا گمراوی</p>
-              <p style={{ fontSize: "12px", color: "#a0a0b8", margin: 0 }}>آکادمی تخصصی آموزش هوش مصنوعی و برنامه‌نویسی</p>
+              
             </div>
           </div>
           <p style={{ fontSize: "13px", color: "#a0a0b8", lineHeight: 2, maxWidth: "320px", marginBottom: "1.2rem" }}>
