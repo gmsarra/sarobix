@@ -34,7 +34,7 @@ export default function Navbar() {
         }}>
 
           {/* RIGHT LINKS */}
-          <div className="desktop-links" className="nav-grid" style={{ display: "flex", alignItems: "center", gap: "2rem", justifyContent: "flex-end" }}>
+          <div className="desktop-links nav-grid" style={{ display: "flex", alignItems: "center", gap: "2rem", justifyContent: "flex-end" }}>
             <Link href="/" style={linkStyle}>صفحه اصلی</Link>
             <Link href="/courses" style={linkStyle}>دوره‌های آموزشی</Link>
             <Link href="/blog" style={linkStyle}>مقالات</Link>
