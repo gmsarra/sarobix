@@ -28,14 +28,13 @@ export default function Navbar() {
       }}>
         <div style={{
           maxWidth: "1200px", margin: "0 auto", padding: "0.8rem 2rem",
-          display: "grid",
-          gridTemplateColumns: "1fr auto 1fr",
+          display: "grid", gridTemplateColumns: "1fr auto 1fr",
           alignItems: "center",
           gap: "1rem",
         }}>
 
           {/* RIGHT LINKS */}
-          <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "2rem", justifyContent: "flex-end" }}>
+          <div /*className="desktop-links"*/ className="nav-grid" style={{ display: "flex", alignItems: "center", gap: "2rem", justifyContent: "flex-end" }}>
             <Link href="/" style={linkStyle}>صفحه اصلی</Link>
             <Link href="/courses" style={linkStyle}>دوره‌های آموزشی</Link>
             <Link href="/blog" style={linkStyle}>مقالات</Link>
@@ -49,7 +48,7 @@ export default function Navbar() {
 
           {/* LEFT LINKS + ACTIONS */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "2rem" }}>
-            <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+            <div /*className="desktop-links"*/ className="nav-logo-center" style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
               <Link href="/about" style={linkStyle}>درباره ما</Link>
               <Link href="/collaborate" style={linkStyle}>همکاری</Link>
               <Link href="/contact" style={linkStyle}>تماس با ما</Link>
@@ -98,6 +97,18 @@ export default function Navbar() {
         }
         .desktop-links a:hover { color: #E8632A !important; }
       `}</style>
+      <style>{`
+  @media (max-width: 900px) {
+    .nav-grid { 
+      display: flex !important; 
+      justify-content: center !important;
+      position: relative;
+    }
+    .nav-logo-center {
+      margin: 0 auto !important;
+    }
+  }
+`}</style>
     </>
   );
 }
