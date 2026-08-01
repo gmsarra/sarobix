@@ -23,8 +23,8 @@ export default function ContactPage() {
   // TODO سارا: لینک و آیدی واقعی تلگرام و لینکدین رو جایگزین placeholder ها کن
   const socials = [
     { name: "اینستاگرام", handle: "@sarobix.dev", href: "https://instagram.com/sarobix.dev", color: "#E1306C", icon: "📸", bg: "#fff0f5" },
-    { name: "لینکدین", handle: "", href: "", color: "#0077B5", icon: "💼", bg: "#f0f7ff" },
-    { name: "تلگرام", handle: "", href: "", color: "#27AEEF", icon: "✈️", bg: "#f0f9ff" },
+    { name: "تلگرام", handle: "@sarobix", href: "https://t.me/sarobix", color: "#27AEEF", icon: "✈️", bg: "#f0f9ff" },
+    { name: "لینکدین", handle: "sarobix", href: "https://linkedin.com/company/sarobix", color: "#0077B5", icon: "💼", bg: "#f0f7ff" },
     { name: "بله", handle: "@sarobix", href: "https://ble.ir/sarobix", color: "#28A745", icon: "🟢", bg: "#f0fff4" },
   ];
 
@@ -46,14 +46,16 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem 6rem", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "4rem", alignItems: "start" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem 6rem", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "4rem", alignItems: "start" }}
+        className="contact-grid"
+      >
 
         {/* FORM */}
         <div style={{ background: "#fff", borderRadius: "24px", border: "1.5px solid #f0f0f0", padding: "2.5rem", boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
           <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#1A1A2E", marginBottom: "2rem" }}>ارسال پیام</h2>
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="form-row">
               <div>
                 <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}>   </label>
                 <input
@@ -76,7 +78,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="form-row">
               <div>
                 <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}> </label>
                 <input
@@ -187,7 +189,8 @@ export default function ContactPage() {
 
       <style>{`
         @media (max-width: 768px) {
-          .contact-grid { grid-template-columns: 1fr !important; }
+          .contact-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .form-row { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
