@@ -34,7 +34,7 @@ export default function Navbar() {
         }}>
 
           {/* RIGHT LINKS */}
-          <div /*className="desktop-links"*/ className="nav-grid" style={{ display: "flex", alignItems: "center", gap: "2rem", justifyContent: "flex-end" }}>
+          <div className="desktop-links" className="nav-grid" style={{ display: "flex", alignItems: "center", gap: "2rem", justifyContent: "flex-end" }}>
             <Link href="/" style={linkStyle}>صفحه اصلی</Link>
             <Link href="/courses" style={linkStyle}>دوره‌های آموزشی</Link>
             <Link href="/blog" style={linkStyle}>مقالات</Link>
@@ -48,7 +48,7 @@ export default function Navbar() {
 
           {/* LEFT LINKS + ACTIONS */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "2rem" }}>
-            <div /*className="desktop-links"*/ className="nav-logo-center" style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+            <div className="desktop-links" className="nav-logo-center" style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
               <Link href="/about" style={linkStyle}>درباره ما</Link>
               <Link href="/collaborate" style={linkStyle}>همکاری</Link>
               <Link href="/contact" style={linkStyle}>تماس با ما</Link>
@@ -90,13 +90,23 @@ export default function Navbar() {
       </nav>
 
       <style>{`
-        @media (max-width: 900px) {
-          .desktop-links { display: none !important; }
-          .nav-actions { display: none !important; }
-          .hamburger-btn { display: flex !important; }
-        }
-        .desktop-links a:hover { color: #E8632A !important; }
-      `}</style>
+  @media (max-width: 900px) {
+    .desktop-links { display: none !important; }
+    .nav-actions { display: none !important; }
+    .hamburger-btn { display: flex !important; }
+    .nav-grid {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
+    .nav-logo-center {
+      position: absolute !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
+  .desktop-links a:hover { color: #E8632A !important; }
+`}</style>
       <style>{`
   @media (max-width: 900px) {
     .nav-grid { 
