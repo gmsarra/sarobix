@@ -57,7 +57,7 @@ export default function Home() {
 
       {/* STATS */}
       <section style={{ background: "#F5F5F5", borderTop: "1px solid #eee", borderBottom: "1px solid #eee", padding: "2.5rem 0" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem", display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem", display: "flex", justifyContent: "center", flexWrap: "wrap", rowGap: "0" }}>
           {[["‎+۵۰۰", "دانشجوی فعال"], ["+۸", "دوره تخصصی"], ["+۵", "سال تجربه تدریس"], ["+۹۵٪", "رضایت دانشجویان"]].map(([num, label], i) => (
             <div key={label} style={{ display: "flex", alignItems: "center" }}>
               <div style={{ textAlign: "center", padding: "1rem 2.5rem" }}>

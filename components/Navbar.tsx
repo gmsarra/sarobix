@@ -72,7 +72,7 @@ export default function Navbar() {
 
             {/* MOBILE HAMBURGER */}
             <button onClick={() => setMenuOpen(!menuOpen)} className="hamburger-btn"
-              style={{ background: "none", border: "none", cursor: "pointer", flexDirection: "column", gap: "5px", display: "none" }} aria-label="منو">
+              style={{ background: "none", border: "none", cursor: "pointer", flexDirection: "column", gap: "5px", display: "none", position: "absolute", left: "1rem", top: "1rem" }} aria-label="منو">
               <span style={{ display: "block", width: "24px", height: "2px", background: "#555", borderRadius: "2px" }}></span>
               <span style={{ display: "block", width: "24px", height: "2px", background: "#555", borderRadius: "2px" }}></span>
               <span style={{ display: "block", width: "24px", height: "2px", background: "#555", borderRadius: "2px" }}></span>
