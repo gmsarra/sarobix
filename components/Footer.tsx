@@ -59,7 +59,7 @@ export default function Footer() {
 
 
 
-"use client";
+/*"use client";
 import Link from "next/link";
 
 export default function Footer() {
@@ -104,13 +104,171 @@ export default function Footer() {
       }}
         className="footer-grid"
       >
-        {/* Brand column */}
-        <div className="footer-brand">
+        {/* Brand column */
+        /*<div className="footer-brand">
           <div className="footer-brand-row" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
             <img src="/logo-main.png" alt="Sarobix" style={{ width: "44px", height: "44px", objectFit: "contain" }} />
             <div>
               <p style={{ fontWeight: 800, fontSize: "15px", margin: 0 }}>مهندس سارا گمراوی</p>
-              
+
+            </div>
+          </div>
+          <p style={{ fontSize: "13px", color: "#a0a0b8", lineHeight: 2, maxWidth: "320px", marginBottom: "1.2rem" }}>
+            آموزش برنامه‌نویسی و هوش مصنوعی برای تمامی سنین، با رویکردی عملی و پروژه‌محور.
+          </p>
+
+          {/* Social pills */
+          /*<div className="footer-brand-row" style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            {socials.map(s => (
+              <a
+                key={s.name}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontSize: "12px", fontWeight: 600, padding: "7px 14px", borderRadius: "100px",
+                  border: `1px solid ${s.color}40`, color: s.color,
+                  background: `${s.color}15`, textDecoration: "none",
+                  width: "fit-content", fontFamily: "Vazirmatn, sans-serif",
+                }}
+              >
+                {s.name}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Courses column */
+       /* <div>
+          <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "1rem", color: "#C9A96E" }}>دوره‌ها</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {courses.map(c => (
+              <Link
+                key={c.href}
+                href={c.href}
+                style={{ fontSize: "13px", color: "#d0d0e0", textDecoration: "none", transition: "color 0.2s ease" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E8632A"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#d0d0e0"; }}
+              >
+                {c.title}
+              </Link>
+            ))}
+            <Link
+              href="/courses"
+              style={{ fontSize: "13px", color: "#E8632A", fontWeight: 600, textDecoration: "none" }}
+            >
+              مشاهده همه دوره‌ها ←
+            </Link>
+          </div>
+        </div>
+
+        {/* Quick links column */
+        /*<div>
+          <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "1rem", color: "#C9A96E" }}>دسترسی سریع</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {quickLinks.map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                style={{ fontSize: "13px", color: "#d0d0e0", textDecoration: "none", transition: "color 0.2s ease" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E8632A"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#d0d0e0"; }}
+              >
+                {l.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */
+      /*<div style={{
+        borderTop: "1px solid rgba(255,255,255,0.1)",
+        padding: "1.2rem 1.5rem",
+        textAlign: "center",
+        fontSize: "12px",
+        color: "#7a7a95",
+      }}>
+        © {new Date().getFullYear()} Sarobix — تمامی حقوق محفوظ است
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .footer-grid { grid-template-columns: 1fr !important; }
+          .footer-brand { text-align: center; }
+          .footer-brand-row { justify-content: center; }
+          .footer-brand p { margin-left: auto !important; margin-right: auto !important; }
+        }
+      `}</style>
+    </footer>
+  );
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+import Link from "next/link";
+
+export default function Footer() {
+  const socials = [
+    { name: "اینستاگرام", href: "https://instagram.com/sarobix.dev", color: "#E1306C" },
+    { name: "تلگرام", href: "https://t.me/sarobix", color: "#27AEEF" },
+    { name: "لینکدین", href: "https://linkedin.com/company/sarobix", color: "#0077B5" },
+    { name: "بله", href: "https://ble.ir/sarobix", color: "#28A745" },
+  ];
+
+  // TODO سارا: عنوان و لینک واقعی ۸ دوره رو جایگزین این‌ها کن
+  const courses = [
+    { title: "دوره برنامه‌نویسی مقدماتی", href: "/courses/programming-basics" },
+    { title: "دوره هوش مصنوعی", href: "/courses/ai" },
+    { title: "دوره رباتیک", href: "/courses/robotics" },
+    { title: "دوره پایتون", href: "/courses/python" },
+  ];
+
+  const quickLinks = [
+    { title: "صفحه اصلی", href: "/" },
+    { title: "دوره‌های آموزشی", href: "/courses" },
+    { title: "درباره ما", href: "/about" },
+    { title: "مقالات", href: "/blog" },
+    { title: "تماس با ما", href: "/contact" },
+  ];
+
+  return (
+    <footer style={{
+      background: "#1A1A2E",
+      color: "#fff",
+      fontFamily: "Vazirmatn, sans-serif",
+      direction: "rtl",
+      paddingTop: "4rem",
+    }}>
+      <div style={{
+        maxWidth: "1100px",
+        margin: "0 auto",
+        padding: "0 1.5rem 3rem",
+        display: "grid",
+        gridTemplateColumns: "1.4fr 1fr 1fr",
+        gap: "3rem",
+      }}
+        className="sb-footer-grid"
+      >
+        {/* Brand column */}
+        <div className="sb-footer-brand">
+          <div className="sb-footer-brand-row" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
+            <img src="/logo-main.png" alt="Sarobix" style={{ width: "44px", height: "44px", objectFit: "contain" }} />
+            <div>
+              <p style={{ fontWeight: 800, fontSize: "15px", margin: 0 }}></p>
+              <p style={{ fontSize: "12px", color: "#a0a0b8", margin: 0 }}> سارا گمراوی - آموزش تخصصی هوش مصنوعی  </p>
             </div>
           </div>
           <p style={{ fontSize: "13px", color: "#a0a0b8", lineHeight: 2, maxWidth: "320px", marginBottom: "1.2rem" }}>
@@ -118,7 +276,7 @@ export default function Footer() {
           </p>
 
           {/* Social pills */}
-          <div className="footer-brand-row" style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+          <div className="sb-footer-brand-row" style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             {socials.map(s => (
               <a
                 key={s.name}
@@ -194,10 +352,10 @@ export default function Footer() {
 
       <style>{`
         @media (max-width: 768px) {
-          .footer-grid { grid-template-columns: 1fr !important; }
-          .footer-brand { text-align: center; }
-          .footer-brand-row { justify-content: center; }
-          .footer-brand p { margin-left: auto !important; margin-right: auto !important; }
+          .sb-footer-grid { grid-template-columns: 1fr !important; }
+          .sb-footer-brand { text-align: center; }
+          .sb-footer-brand-row { justify-content: center; }
+          .sb-footer-brand p { margin-left: auto !important; margin-right: auto !important; }
         }
       `}</style>
     </footer>
