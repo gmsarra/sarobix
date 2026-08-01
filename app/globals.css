@@ -427,3 +427,29 @@
     .footer-grid { grid-template-columns:1fr; }
   }
   body { padding-top: 100px; }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  /* PAGE */
+  main { padding-top: 80px !important; }
+  
+  /* FEATURES */
+  .features-grid { grid-template-columns: 1fr !important; }
+  .section-header { text-align: center !important; }
+  .section-header h2 { text-align: center !important; }
+  
+  /* COURSES */
+  .courses-grid { grid-template-columns: 1fr !important; }
+  
+  /* STATS */
+  .stats-grid { flex-direction: column !important; align-items: center !important; }
+  .stat-divider { display: none !important; }
+  
+  /* ABOUT */
+  .about-grid { grid-template-columns: 1fr !important; text-align: center !important; }
+  .about-feats { text-align: right !important; }
+  
+  /* FOOTER */
+  .footer-grid { grid-template-columns: 1fr !important; text-align: center !important; }
+  .social-links { justify-content: center !important; }
+}

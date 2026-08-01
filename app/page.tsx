@@ -77,7 +77,7 @@ export default function Home() {
             <span style={{ display: "inline-block", fontSize: "11px", letterSpacing: "2px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "4px 14px", borderRadius: "100px", marginBottom: "1rem" }}>چرا Sarobix؟</span>
             <h2 style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)", fontWeight: 900, color: "#1A1A2E" }}>آموزش حرفه‌ای با تضمین کیفیت</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
             {[
               ["🎓", "مدرک پایان دوره", "پس از اتمام هر دوره گواهی معتبر دریافت کنید."],
               ["🛡️", "پشتیبانی مادام‌العمر", "با خرید هر دوره از پشتیبانی همیشگی بهره‌مند شوید."],
@@ -103,7 +103,7 @@ export default function Home() {
             <p style={{ color: "#888", fontSize: "14px" }}>یادگیری عملی با پروژه‌های واقعی</p>
             <a href="/courses" style={{ display: "inline-block", marginTop: "1rem", fontSize: "13px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "7px 20px", borderRadius: "100px", textDecoration: "none" }}>مشاهده همه ←</a>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "1.2rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.2rem" }}>
             {[
               { icon: "🧠", title: "هوش مصنوعی مقدماتی", time: "۲۰ ساعت", level: "مبتدی", price: "۶۵۰,۰۰۰", old: "۱,۵۰۰,۰۰۰", badge: "پرطرفدار", hot: true },
               { icon: "🤖", title: "هوش مصنوعی پیشرفته", time: "۴۰ ساعت", level: "متوسط+", price: "۱,۱۰۰,۰۰۰", old: "۲,۵۰۰,۰۰۰", badge: "پیشرفته", hot: false },
