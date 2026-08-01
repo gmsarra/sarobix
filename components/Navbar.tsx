@@ -48,7 +48,7 @@ export default function Navbar() {
 
           {/* LEFT LINKS + ACTIONS */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "2rem" }}>
-            <div className="desktop-links" className="nav-logo-center" style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+            <div className="desktop-links nav-logo-center"style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
               <Link href="/about" style={linkStyle}>درباره ما</Link>
               <Link href="/collaborate" style={linkStyle}>همکاری</Link>
               <Link href="/contact" style={linkStyle}>تماس با ما</Link>
