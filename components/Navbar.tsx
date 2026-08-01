@@ -33,7 +33,7 @@ export default function Navbar() {
           display: "flex", alignItems: "center", justifyContent: "space-between",
         }}>
 
-          <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1, justifyContent: "flex-end", flex: 1 }}>
+          <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1, justifyContent: "flex-end" }}>
             <Link href="/" style={linkStyle}>صفحه اصلی</Link>
             <Link href="/courses" style={linkStyle}>دوره‌های آموزشی</Link>
             <Link href="/blog" style={linkStyle}>مقالات</Link>
