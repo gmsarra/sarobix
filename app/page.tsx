@@ -136,7 +136,7 @@ export default function Home() {
 
       {/* ABOUT */}
       <section style={{ padding: "6rem 0", background: "#fff" }} id="about">
-        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem", display: "grid", gridTemplateColumns: "1fr 1.3fr", gap: "5rem", alignItems: "center" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem", display: "grid", gridTemplateColumns: "1fr", gap: "5rem", alignItems: "center" }}>
           <div style={{ textAlign: "center" }}>
             <img src="/logo-main.png" alt="سارا گمراوی" style={{ width: "220px", objectFit: "contain" }} />
           </div>
@@ -172,6 +172,15 @@ export default function Home() {
         </div>
       </section>
 
+
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-col { grid-template-columns: 1fr !important; }
+          .mobile-center { text-align: center !important; }
+          .mobile-hide { display: none !important; }
+          .mobile-full { width: 100% !important; }
+        }
+      `}</style>
     </main>
   );
 }
