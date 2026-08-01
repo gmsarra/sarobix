@@ -35,7 +35,7 @@ export default function Navbar() {
         }} className="nav-desktop">
 
           {/* RIGHT LINKS */}
-          <div style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1, justifyContent: "flex-end" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flex: 1, justifyContent: "flex-end", paddingLeft: "100px" }}>
             <Link href="/" style={linkStyle}>صفحه اصلی</Link>
             <Link href="/courses" style={linkStyle}>دوره‌های آموزشی</Link>
             <Link href="/blog" style={linkStyle}>مقالات</Link>
@@ -51,7 +51,7 @@ export default function Navbar() {
           </Link>
 
           {/* LEFT LINKS + ACTIONS */}
-          <div style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1, justifyContent: "flex-start" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flex: 1, justifyContent: "flex-start", paddingRight: "100px" }}>
             <Link href="/about" style={linkStyle}>درباره ما</Link>
             <Link href="/collaborate" style={linkStyle}>همکاری</Link>
             <Link href="/contact" style={linkStyle}>تماس با ما</Link>
