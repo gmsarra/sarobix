@@ -30,7 +30,7 @@ export default function Navbar() {
 
         {/* DESKTOP */}
         <div style={{
-          maxWidth: "1200px", margin: "0 auto", padding: "1.2rem 2rem",
+          maxWidth: "1200px", margin: "0 auto", padding: "2rem 2rem",
           display: "flex", alignItems: "center", position: "relative",
         }} className="nav-desktop">
 
@@ -47,7 +47,7 @@ export default function Navbar() {
             display: "flex", flexDirection: "column", alignItems: "center", textDecoration: "none",
           }}>
             <img src="/logo-main.png" alt="Sarobix" style={{ width: "65px", height: "65px", objectFit: "contain" }} />
-            <span style={{ fontSize: "10px", color: "#aaa", marginTop: "2px", letterSpacing: "2px" }}>SAROBIX</span>
+            <span style={{ fontSize: "10px", color: "#aaa", marginTop: "2px", letterSpacing: "2px" }}></span>
           </Link>
 
           {/* LEFT LINKS + ACTIONS */}
@@ -56,13 +56,13 @@ export default function Navbar() {
             <Link href="/collaborate" style={linkStyle}>همکاری</Link>
             <Link href="/contact" style={linkStyle}>تماس با ما</Link>
             <button style={{ background: "none", border: "none", cursor: "pointer", color: "#E8632A", display: "flex", alignItems: "center", padding: "4px" }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/> 
               </svg>
             </button>
             <button style={{
               fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "13px",
-              padding: "9px 22px", borderRadius: "100px",
+              padding: "9px 22px", borderRadius: "10px",
               background: "linear-gradient(135deg,#E8632A,#ff7a40)",
               color: "#fff", border: "none", cursor: "pointer",
               boxShadow: "0 4px 14px rgba(232,99,42,0.3)", whiteSpace: "nowrap",
