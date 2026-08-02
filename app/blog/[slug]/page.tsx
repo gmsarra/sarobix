@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { posts, getPostBySlug } from "@/data/posts"; // TODO سارا: اگه فایل posts.ts رو جای دیگه‌ای گذاشتی، مسیر import رو اصلاح کن
+import SafeImage from "@/components/SafeImage"; // TODO سارا: اگه SafeImage.tsx رو جای دیگه‌ای گذاشتی، مسیر رو اصلاح کن
 
 export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
@@ -48,11 +49,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Cover image */}
         <div style={{ width: "100%", aspectRatio: "16 / 9", borderRadius: "20px", overflow: "hidden", background: "#f5f5f5", marginBottom: "2.5rem" }}>
-          <img
+          <SafeImage
             src={post!.image}
             alt={post!.title}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
           />
         </div>
 
