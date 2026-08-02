@@ -1,4 +1,26 @@
+"use client";
+import { useEffect, useRef } from "react";
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
   return (
     <main style={{ background: "#fff", minHeight: "100vh", direction: "rtl", fontFamily: "Vazirmatn, sans-serif", paddingTop: "100px" }}>
 
@@ -137,8 +159,15 @@ export default function Home() {
       {/* ABOUT */}
       <section style={{ padding: "6rem 0", background: "#fff" }} id="about">
         <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem", display: "grid", gridTemplateColumns: "1fr", gap: "5rem", alignItems: "center" }}>
-          <div style={{ textAlign: "center" }}>
-            <img src="/logo-main.png" alt="سارا گمراوی" style={{ width: "220px", objectFit: "contain" }} />
+        <div style={{ textAlign: "center" }}>
+            <video
+              ref={videoRef}
+              src="/videos/intro.mp4"
+              muted
+              loop
+              playsInline
+              style={{ width: "100%",  borderRadius: "20px", boxShadow: "0 20px 60px rgba(0,0,0,0.15)" }}
+            />
           </div>
           <div>
             <span style={{ display: "inline-block", fontSize: "11px", letterSpacing: "2px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "4px 14px", borderRadius: "100px", marginBottom: "1rem" }}>درباره مدرس</span>
