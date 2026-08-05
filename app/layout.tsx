@@ -3,8 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Sarobix | آموزش هوش مصنوعی، رباتیک و برنامه‌نویسی",
-  description: "با Sarobix مهارت‌های تکنولوژی، هوش مصنوعی و رباتیک رو از صفر تا حرفه‌ای یاد بگیر",
+  title: "SAROBIX | هوش مصنوعی",
+  description: "با SAROBIX مهارت‌های تکنولوژی و هوش مصنوعی رو از صفر تا آخر یاد بگیر",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

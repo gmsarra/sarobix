@@ -347,7 +347,7 @@ export default function Footer() {
         fontSize: "12px",
         color: "#7a7a95",
       }}>
-        © {new Date().getFullYear()} Sarobix — تمامی حقوق محفوظ است
+        © 2025 Sarobix — تمامی حقوق محفوظ است
       </div>
 
       <style>{`
