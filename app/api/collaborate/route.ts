@@ -23,7 +23,7 @@ async function sendEmailNotification(summary: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Sarobix <onboarding@resend.dev>", // TODO سارا: بعد از verify کردن دامنه توی Resend، اینو به noreply@sarobix.com تغییر بده
+        from: "Sarobix <noreply@sarobix.com>", // TODO سارا: بعد از verify کردن دامنه توی Resend، اینو به noreply@sarobix.com تغییر بده
         to: NOTIFY_EMAIL,
         subject: "درخواست جدید همکاری - ساروبیکس",
         text: summary,
