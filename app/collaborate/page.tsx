@@ -1,6 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { positions } from "@/data/positions"; // TODO سارا: اگه مسیر positions.ts فرق داره، اینجا اصلاح کن
+
+// TODO سارا: مقدار cloud name و upload preset رو از Cloudinary بگیر (چون این‌ها public هستن، اینجا مستقیم قابل نوشتنن، نه env var حساس)
+const CLOUDINARY_CLOUD_NAME = "vacpco6o";
+const CLOUDINARY_UPLOAD_PRESET = "sarobix_resumes";
 
 export default function CollaboratePage() {
   const [inquiry, setInquiry] = useState({ name: "", email: "", phone: "", website: "", message: "" });
@@ -12,8 +16,47 @@ export default function CollaboratePage() {
   const [appSent, setAppSent] = useState(false);
   const [appLoading, setAppLoading] = useState(false);
 
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const uploadResumeFile = async (file: File) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        setApplication(prev => ({ ...prev, resumeUrl: data.secure_url }));
+        setUploadedFileName(file.name);
+      }
+    } catch (err) {
+      console.error("Resume upload error:", err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) uploadResumeFile(file);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) uploadResumeFile(file);
   };
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
@@ -47,6 +90,7 @@ export default function CollaboratePage() {
       if (res.ok) {
         setAppSent(true);
         setApplication({ name: "", email: "", phone: "", resumeUrl: "", motivation: "" });
+        setUploadedFileName("");
         setTimeout(() => setAppSent(false), 4000);
       }
     } finally {
@@ -59,6 +103,13 @@ export default function CollaboratePage() {
     borderRadius: "12px", fontFamily: "Vazirmatn, sans-serif", fontSize: "14px",
     color: "#333", outline: "none", direction: "rtl",
   };
+
+  // برچسب فیلد الزامی با ستاره‌ی قرمز — استفاده‌ی مشترک توی هر دو فرم
+  const RequiredLabel = ({ text }: { text: string }) => (
+    <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}>
+      {text} <span style={{ color: "#e03131" }}>*</span>
+    </label>
+  );
 
   const benefits = [
     // TODO سارا: این لیست رو با چیزی که واقعاً می‌تونی تضمین کنی هماهنگ کن
@@ -177,11 +228,26 @@ export default function CollaboratePage() {
             اگه ایده یا زمینه‌ی همکاری خاصی مدنظرته که توی موقعیت‌های بالا نبود، از همین‌جا باهامون در ارتباط باش.
           </p>
           <form onSubmit={handleInquirySubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", background: "#fff", padding: "2rem", borderRadius: "20px", border: "1.5px solid #eee" }}>
-            <input required placeholder="نام و نام خانوادگی" value={inquiry.name} onChange={e => setInquiry({ ...inquiry, name: e.target.value })} style={inputStyle} />
-            <input required type="email" placeholder="ایمیل" value={inquiry.email} onChange={e => setInquiry({ ...inquiry, email: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
-            <input placeholder="شماره موبایل" value={inquiry.phone} onChange={e => setInquiry({ ...inquiry, phone: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
-            <input placeholder="آدرس سایت (اختیاری)" value={inquiry.website} onChange={e => setInquiry({ ...inquiry, website: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
-            <textarea required placeholder="توضیحات" rows={4} value={inquiry.message} onChange={e => setInquiry({ ...inquiry, message: e.target.value })} style={{ ...inputStyle, resize: "vertical" }} />
+            <div>
+              <RequiredLabel text="نام و نام خانوادگی" />
+              <input required placeholder="نام و نام خانوادگی" value={inquiry.name} onChange={e => setInquiry({ ...inquiry, name: e.target.value })} style={inputStyle} />
+            </div>
+            <div>
+              <RequiredLabel text="ایمیل" />
+              <input required type="email" placeholder="ایمیل" value={inquiry.email} onChange={e => setInquiry({ ...inquiry, email: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+            </div>
+            <div>
+              <RequiredLabel text="شماره موبایل" />
+              <input required placeholder="شماره موبایل" value={inquiry.phone} onChange={e => setInquiry({ ...inquiry, phone: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+            </div>
+            <div>
+              <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}>آدرس سایت (اختیاری)</label>
+              <input placeholder="آدرس سایت (اختیاری)" value={inquiry.website} onChange={e => setInquiry({ ...inquiry, website: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+            </div>
+            <div>
+              <RequiredLabel text="توضیحات" />
+              <textarea required placeholder="توضیحات" rows={4} value={inquiry.message} onChange={e => setInquiry({ ...inquiry, message: e.target.value })} style={{ ...inputStyle, resize: "vertical" }} />
+            </div>
             <button type="submit" disabled={inquiryLoading} style={{
               fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "12px",
               border: "none", cursor: "pointer", color: "#fff",
@@ -209,12 +275,54 @@ export default function CollaboratePage() {
                 {positions.map(p => <option key={p.slug} value={p.slug}>{p.title}</option>)}
               </select>
             </div>
-            <input required placeholder="نام و نام خانوادگی" value={application.name} onChange={e => setApplication({ ...application, name: e.target.value })} style={inputStyle} />
-            <input required type="email" placeholder="ایمیل" value={application.email} onChange={e => setApplication({ ...application, email: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
-            <input placeholder="شماره موبایل" value={application.phone} onChange={e => setApplication({ ...application, phone: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
-            {/* TODO سارا: فعلاً لینک رزومه (مثلاً از گوگل درایو) می‌گیریم، نه آپلود مستقیم فایل — چون آپلود فایل نیاز به تنظیم جدا (مثل Cloudinary) داره */}
-            <input placeholder="لینک رزومه (گوگل درایو یا مشابه)" value={application.resumeUrl} onChange={e => setApplication({ ...application, resumeUrl: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
-            <textarea required placeholder="چرا می‌خوای با ساروبیکس همکاری کنی؟" rows={4} value={application.motivation} onChange={e => setApplication({ ...application, motivation: e.target.value })} style={{ ...inputStyle, resize: "vertical" }} />
+            <div>
+              <RequiredLabel text="نام و نام خانوادگی" />
+              <input required placeholder="نام و نام خانوادگی" value={application.name} onChange={e => setApplication({ ...application, name: e.target.value })} style={inputStyle} />
+            </div>
+            <div>
+              <RequiredLabel text="ایمیل" />
+              <input required type="email" placeholder="ایمیل" value={application.email} onChange={e => setApplication({ ...application, email: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+            </div>
+            <div>
+              <RequiredLabel text="شماره موبایل" />
+              <input required placeholder="شماره موبایل" value={application.phone} onChange={e => setApplication({ ...application, phone: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+            </div>
+
+            {/* Drag & drop resume upload */}
+            <div>
+              <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}>آپلود فایل رزومه (اختیاری)</label>
+              <div
+                onDragOver={e => { e.preventDefault(); setDragActive(true); }}
+                onDragLeave={() => setDragActive(false)}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+                style={{
+                  border: `1.5px dashed ${dragActive ? "#E8632A" : "#ddd"}`,
+                  borderRadius: "12px", padding: "1.5rem", textAlign: "center",
+                  cursor: "pointer", background: dragActive ? "rgba(232,99,42,0.05)" : "#fafafa",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx" onChange={handleFileSelect} style={{ display: "none" }} />
+                {uploading ? (
+                  <p style={{ fontSize: "13px", color: "#888", margin: 0 }}>در حال آپلود...</p>
+                ) : uploadedFileName ? (
+                  <p style={{ fontSize: "13px", color: "#28a745", margin: 0 }}>✓ {uploadedFileName} آپلود شد</p>
+                ) : (
+                  <p style={{ fontSize: "13px", color: "#888", margin: 0 }}>فایل رزومه رو اینجا بکش، یا کلیک کن (PDF یا Word)</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}>یا لینک رزومه (گوگل درایو یا مشابه)</label>
+              <input placeholder="لینک رزومه" value={application.resumeUrl} onChange={e => setApplication({ ...application, resumeUrl: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+            </div>
+
+            <div>
+              <RequiredLabel text="چرا می‌خوای با ساروبیکس همکاری کنی؟" />
+              <textarea required placeholder="چرا می‌خوای با ساروبیکس همکاری کنی؟" rows={4} value={application.motivation} onChange={e => setApplication({ ...application, motivation: e.target.value })} style={{ ...inputStyle, resize: "vertical" }} />
+            </div>
             <button type="submit" disabled={appLoading} style={{
               fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "12px",
               border: "none", cursor: "pointer", color: "#fff",
