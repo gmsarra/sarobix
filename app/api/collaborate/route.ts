@@ -13,35 +13,52 @@ const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL; // ایمیلی که می‌خو�
 const BALE_BOT_TOKEN = process.env.BALE_BOT_TOKEN;
 const BALE_CHAT_ID = process.env.BALE_CHAT_ID; // آیدی عددی چتی که ربات باید پیام رو توش بفرسته
 
-async function sendEmailNotification(summary: string) {
+async function sendEmailNotification(summary: string, resumeUrl?: string) {
   if (!RESEND_API_KEY || !NOTIFY_EMAIL) return; // اگه تنظیم نشده، فقط رد شو، کل فرم رو خراب نکن
   try {
+    const payload: Record<string, unknown> = {
+      from: "Sarobix <noreply@sarobix.com>",
+      to: NOTIFY_EMAIL,
+      subject: "درخواست جدید همکاری - ساروبیکس",
+      text: summary,
+    };
+    // اگه رزومه‌ای آپلود شده، مستقیم به‌عنوان پیوست (attachment) به ایمیل اضافه می‌شه
+    // به‌جای اینکه فقط لینکش فرستاده بشه — Resend خودش فایل رو از روی این آدرس می‌گیره
+    if (resumeUrl) {
+      const fileName = resumeUrl.split("/").pop() || "resume.pdf";
+      payload.attachments = [{ path: resumeUrl, filename: fileName }];
+    }
     await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from: "Sarobix <noreply@sarobix.com>", // TODO سارا: بعد از verify کردن دامنه توی Resend، اینو به noreply@sarobix.com تغییر بده
-        to: NOTIFY_EMAIL,
-        subject: "درخواست جدید همکاری - ساروبیکس",
-        text: summary,
-      }),
+      body: JSON.stringify(payload),
     });
   } catch (err) {
     console.error("Email notification error:", err);
   }
 }
 
-async function sendBaleNotification(summary: string) {
+async function sendBaleNotification(summary: string, resumeUrl?: string) {
   if (!BALE_BOT_TOKEN || !BALE_CHAT_ID) return;
   try {
-    await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: BALE_CHAT_ID, text: summary }),
-    });
+    if (resumeUrl) {
+      // فایل رزومه مستقیم به‌عنوان سند (document) توی چت بله ارسال می‌شه، نه فقط لینکش
+      // بله (مثل تلگرام) اجازه می‌ده به‌جای آپلود دستی، آدرس فایل رو بدیم و خودش دانلود/ارسالش کنه
+      await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendDocument`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: BALE_CHAT_ID, document: resumeUrl, caption: summary }),
+      });
+    } else {
+      await fetch(`https://tapi.bale.ai/bot${BALE_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: BALE_CHAT_ID, text: summary }),
+      });
+    }
   } catch (err) {
     console.error("Bale notification error:", err);
   }
@@ -86,7 +103,10 @@ export async function POST(req: Request) {
     ].filter(Boolean).join("\n");
 
     // نوتیفیکیشن‌ها async و بدون انتظار اجرا می‌شن — اگه ایمیل/بله fail بشه، submit کاربر همچنان موفق باقی می‌مونه
-    await Promise.allSettled([sendEmailNotification(summary), sendBaleNotification(summary)]);
+    await Promise.allSettled([
+      sendEmailNotification(summary, resumeUrl),
+      sendBaleNotification(summary, resumeUrl),
+    ]);
 
     return NextResponse.json({ success: true });
   } catch (err) {

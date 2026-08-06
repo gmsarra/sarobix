@@ -3,15 +3,61 @@ import { useState, useRef } from "react";
 import { positions } from "@/data/positions"; // TODO سارا: اگه مسیر positions.ts فرق داره، اینجا اصلاح کن
 
 // TODO سارا: مقدار cloud name و upload preset رو از Cloudinary بگیر (چون این‌ها public هستن، اینجا مستقیم قابل نوشتنن، نه env var حساس)
-const CLOUDINARY_CLOUD_NAME = "vacpco6o";
-const CLOUDINARY_UPLOAD_PRESET = "sarobix_resumes";
+const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";
+const CLOUDINARY_UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
+
+// اعتبارسنجی نام: فقط فارسی، بدون عدد، حداقل نام+نام‌خانوادگی (دو کلمه)، طول محدود
+const PERSIAN_ONLY_REGEX = /^[\u0600-\u06FF\s]+$/;
+const HAS_LATIN_REGEX = /[a-zA-Z]/;
+const HAS_DIGIT_REGEX = /[0-9\u06F0-\u06F9]/; // اعداد انگلیسی و فارسی هر دو
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const IRAN_PHONE_REGEX = /^0\d{10}$/; // ۱۱ رقم، شروع با صفر
+
+function validatePersianName(value: string): string | null {
+  const v = value.trim();
+  if (!v) return "نام و نام خانوادگی الزامی است";
+  if (HAS_LATIN_REGEX.test(v)) return "نام باید فقط با حروف فارسی نوشته شود، نه انگلیسی";
+  if (HAS_DIGIT_REGEX.test(v)) return "نام نباید شامل عدد باشد";
+  if (!PERSIAN_ONLY_REGEX.test(v)) return "نام باید فقط شامل حروف فارسی باشد";
+  const parts = v.split(/\s+/).filter(Boolean);
+  if (parts.length < 2) return "لطفاً نام و نام خانوادگی را کامل (هر دو) وارد کنید";
+  if (v.length < 4 || v.length > 50) return "طول نام باید بین ۴ تا ۵۰ حرف باشد";
+  return null;
+}
+
+function validateEmailField(value: string): string | null {
+  const v = value.trim();
+  if (!v) return "ایمیل الزامی است";
+  if (!EMAIL_REGEX.test(v)) return "ایمیل واردشده معتبر نیست (پیدا نشد)";
+  return null;
+}
+
+function validateIranPhone(value: string): string | null {
+  const v = value.trim();
+  if (!v) return "شماره موبایل الزامی است";
+  if (!/^[0-9]+$/.test(v)) return "شماره موبایل باید فقط شامل عدد باشد";
+  if (!IRAN_PHONE_REGEX.test(v)) return "شماره موبایل باید دقیقاً ۱۱ رقم باشد و با صفر شروع شود";
+  return null;
+}
+
+function validatePersianText(value: string, fieldLabel: string): string | null {
+  const v = value.trim();
+  if (!v) return `${fieldLabel} الزامی است`;
+  if (v.length < 40) return `${fieldLabel} باید حداقل یک خط کامل (حدود ۴۰ کاراکتر) نوشته شود`;
+  if (/[a-zA-Z]{3,}/.test(v)) return `${fieldLabel} باید به زبان فارسی نوشته شود`;
+  return null;
+}
+
+const errorTextStyle: React.CSSProperties = { fontSize: "12px", color: "#e03131", marginTop: "4px" };
 
 export default function CollaboratePage() {
   const [inquiry, setInquiry] = useState({ name: "", email: "", phone: "", website: "", message: "" });
+  const [inquiryErrors, setInquiryErrors] = useState<Record<string, string>>({});
   const [inquirySent, setInquirySent] = useState(false);
   const [inquiryLoading, setInquiryLoading] = useState(false);
 
   const [application, setApplication] = useState({ name: "", email: "", phone: "", resumeUrl: "", motivation: "" });
+  const [applicationErrors, setApplicationErrors] = useState<Record<string, string>>({});
   const [selectedPosition, setSelectedPosition] = useState(positions[0]?.slug || "");
   const [appSent, setAppSent] = useState(false);
   const [appLoading, setAppLoading] = useState(false);
@@ -61,6 +107,14 @@ export default function CollaboratePage() {
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const errors: Record<string, string> = {};
+    const nameErr = validatePersianName(inquiry.name); if (nameErr) errors.name = nameErr;
+    const emailErr = validateEmailField(inquiry.email); if (emailErr) errors.email = emailErr;
+    const phoneErr = validateIranPhone(inquiry.phone); if (phoneErr) errors.phone = phoneErr;
+    const messageErr = validatePersianText(inquiry.message, "توضیحات"); if (messageErr) errors.message = messageErr;
+    setInquiryErrors(errors);
+    if (Object.keys(errors).length > 0) return; // اگه خطا هست، اصلاً submit نشو
+
     setInquiryLoading(true);
     try {
       const res = await fetch("/api/collaborate", {
@@ -80,6 +134,14 @@ export default function CollaboratePage() {
 
   const handleApplicationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const errors: Record<string, string> = {};
+    const nameErr = validatePersianName(application.name); if (nameErr) errors.name = nameErr;
+    const emailErr = validateEmailField(application.email); if (emailErr) errors.email = emailErr;
+    const phoneErr = validateIranPhone(application.phone); if (phoneErr) errors.phone = phoneErr;
+    const motivationErr = validatePersianText(application.motivation, "بخش انگیزه"); if (motivationErr) errors.motivation = motivationErr;
+    setApplicationErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     setAppLoading(true);
     try {
       const res = await fetch("/api/collaborate", {
@@ -230,15 +292,18 @@ export default function CollaboratePage() {
           <form onSubmit={handleInquirySubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", background: "#fff", padding: "2rem", borderRadius: "20px", border: "1.5px solid #eee" }}>
             <div>
               <RequiredLabel text="نام و نام خانوادگی" />
-              <input required placeholder="نام و نام خانوادگی" value={inquiry.name} onChange={e => setInquiry({ ...inquiry, name: e.target.value })} style={inputStyle} />
+              <input required placeholder="مثلاً: سارا گمراوی" value={inquiry.name} onChange={e => { setInquiry({ ...inquiry, name: e.target.value }); setInquiryErrors({ ...inquiryErrors, name: "" }); }} style={{ ...inputStyle, border: inquiryErrors.name ? "1.5px solid #e03131" : inputStyle.border }} />
+              {inquiryErrors.name && <p style={errorTextStyle}>{inquiryErrors.name}</p>}
             </div>
             <div>
               <RequiredLabel text="ایمیل" />
-              <input required type="email" placeholder="ایمیل" value={inquiry.email} onChange={e => setInquiry({ ...inquiry, email: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+              <input required type="email" placeholder="ایمیل" value={inquiry.email} onChange={e => { setInquiry({ ...inquiry, email: e.target.value }); setInquiryErrors({ ...inquiryErrors, email: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: inquiryErrors.email ? "1.5px solid #e03131" : inputStyle.border }} />
+              {inquiryErrors.email && <p style={errorTextStyle}>{inquiryErrors.email}</p>}
             </div>
             <div>
               <RequiredLabel text="شماره موبایل" />
-              <input required placeholder="شماره موبایل" value={inquiry.phone} onChange={e => setInquiry({ ...inquiry, phone: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+              <input required placeholder="مثلاً: 09123456789" value={inquiry.phone} onChange={e => { setInquiry({ ...inquiry, phone: e.target.value }); setInquiryErrors({ ...inquiryErrors, phone: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: inquiryErrors.phone ? "1.5px solid #e03131" : inputStyle.border }} />
+              {inquiryErrors.phone && <p style={errorTextStyle}>{inquiryErrors.phone}</p>}
             </div>
             <div>
               <label style={{ fontSize: "13px", color: "#555", fontWeight: 600, display: "block", marginBottom: "6px" }}>آدرس سایت (اختیاری)</label>
@@ -246,7 +311,8 @@ export default function CollaboratePage() {
             </div>
             <div>
               <RequiredLabel text="توضیحات" />
-              <textarea required placeholder="توضیحات" rows={4} value={inquiry.message} onChange={e => setInquiry({ ...inquiry, message: e.target.value })} style={{ ...inputStyle, resize: "vertical" }} />
+              <textarea required placeholder="حداقل یک خط، به فارسی" rows={4} value={inquiry.message} onChange={e => { setInquiry({ ...inquiry, message: e.target.value }); setInquiryErrors({ ...inquiryErrors, message: "" }); }} style={{ ...inputStyle, resize: "vertical", border: inquiryErrors.message ? "1.5px solid #e03131" : inputStyle.border }} />
+              {inquiryErrors.message && <p style={errorTextStyle}>{inquiryErrors.message}</p>}
             </div>
             <button type="submit" disabled={inquiryLoading} style={{
               fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "12px",
@@ -277,15 +343,18 @@ export default function CollaboratePage() {
             </div>
             <div>
               <RequiredLabel text="نام و نام خانوادگی" />
-              <input required placeholder="نام و نام خانوادگی" value={application.name} onChange={e => setApplication({ ...application, name: e.target.value })} style={inputStyle} />
+              <input required placeholder="مثلاً: سارا گمراوی" value={application.name} onChange={e => { setApplication({ ...application, name: e.target.value }); setApplicationErrors({ ...applicationErrors, name: "" }); }} style={{ ...inputStyle, border: applicationErrors.name ? "1.5px solid #e03131" : inputStyle.border }} />
+              {applicationErrors.name && <p style={errorTextStyle}>{applicationErrors.name}</p>}
             </div>
             <div>
               <RequiredLabel text="ایمیل" />
-              <input required type="email" placeholder="ایمیل" value={application.email} onChange={e => setApplication({ ...application, email: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+              <input required type="email" placeholder="ایمیل" value={application.email} onChange={e => { setApplication({ ...application, email: e.target.value }); setApplicationErrors({ ...applicationErrors, email: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: applicationErrors.email ? "1.5px solid #e03131" : inputStyle.border }} />
+              {applicationErrors.email && <p style={errorTextStyle}>{applicationErrors.email}</p>}
             </div>
             <div>
               <RequiredLabel text="شماره موبایل" />
-              <input required placeholder="شماره موبایل" value={application.phone} onChange={e => setApplication({ ...application, phone: e.target.value })} style={{ ...inputStyle, direction: "ltr", textAlign: "right" }} />
+              <input required placeholder="مثلاً: 09123456789" value={application.phone} onChange={e => { setApplication({ ...application, phone: e.target.value }); setApplicationErrors({ ...applicationErrors, phone: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: applicationErrors.phone ? "1.5px solid #e03131" : inputStyle.border }} />
+              {applicationErrors.phone && <p style={errorTextStyle}>{applicationErrors.phone}</p>}
             </div>
 
             {/* Drag & drop resume upload */}
@@ -321,7 +390,8 @@ export default function CollaboratePage() {
 
             <div>
               <RequiredLabel text="چرا می‌خوای با ساروبیکس همکاری کنی؟" />
-              <textarea required placeholder="چرا می‌خوای با ساروبیکس همکاری کنی؟" rows={4} value={application.motivation} onChange={e => setApplication({ ...application, motivation: e.target.value })} style={{ ...inputStyle, resize: "vertical" }} />
+              <textarea required placeholder="حداقل یک خط، به فارسی" rows={4} value={application.motivation} onChange={e => { setApplication({ ...application, motivation: e.target.value }); setApplicationErrors({ ...applicationErrors, motivation: "" }); }} style={{ ...inputStyle, resize: "vertical", border: applicationErrors.motivation ? "1.5px solid #e03131" : inputStyle.border }} />
+              {applicationErrors.motivation && <p style={errorTextStyle}>{applicationErrors.motivation}</p>}
             </div>
             <button type="submit" disabled={appLoading} style={{
               fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "12px",
