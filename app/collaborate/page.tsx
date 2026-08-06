@@ -372,7 +372,7 @@ export default function CollaboratePage() {
             </div>
             <div>
               <RequiredLabel text="نام و نام خانوادگی" />
-              <input required placeholder="مثلاً: سارا گمراوی" value={application.name} onChange={e => { setApplication({ ...application, name: e.target.value }); setApplicationErrors({ ...applicationErrors, name: "" }); }} style={{ ...inputStyle, border: applicationErrors.name ? "1.5px solid #e03131" : inputStyle.border }} />
+              <input required placeholder="مثلاً: علی محمدی" value={application.name} onChange={e => { setApplication({ ...application, name: e.target.value }); setApplicationErrors({ ...applicationErrors, name: "" }); }} style={{ ...inputStyle, border: applicationErrors.name ? "1.5px solid #e03131" : inputStyle.border }} />
               {applicationErrors.name && <p style={errorTextStyle}>{applicationErrors.name}</p>}
             </div>
             <div>
@@ -382,7 +382,7 @@ export default function CollaboratePage() {
             </div>
             <div>
               <RequiredLabel text="شماره موبایل" />
-              <input required placeholder="مثلاً: 09123456789" value={application.phone} onChange={e => { setApplication({ ...application, phone: e.target.value }); setApplicationErrors({ ...applicationErrors, phone: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: applicationErrors.phone ? "1.5px solid #e03131" : inputStyle.border }} />
+              <input required placeholder="09123xxxxx9" value={application.phone} onChange={e => { setApplication({ ...application, phone: e.target.value }); setApplicationErrors({ ...applicationErrors, phone: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: applicationErrors.phone ? "1.5px solid #e03131" : inputStyle.border }} />
               {applicationErrors.phone && <p style={errorTextStyle}>{applicationErrors.phone}</p>}
             </div>
 
