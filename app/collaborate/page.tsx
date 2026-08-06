@@ -205,9 +205,9 @@ export default function CollaboratePage() {
   const benefits = [
     // TODO سارا: این لیست رو با چیزی که واقعاً می‌تونی تضمین کنی هماهنگ کن
     ["🤝", "همکاری منعطف", "بدون محدودیت مکانی، به‌صورت پروژه‌محور یا مستمر"],
-    ["📈", "تجربه‌ی ارزشمند", "کار مستقیم روی محتوای آموزشی هوش مصنوعی و رباتیک"],
+    ["📈", "تجربه‌ی ارزشمند", "کار مستقیم روی محتوای آموزشی هوش مصنوعی و برنامه نویسی"],
     ["💬", "ارتباط مستقیم", "همکاری نزدیک و بدون واسطه با بنیان‌گذار ساروبیکس"],
-    ["🎯", "رشد مشترک", "فرصت رشد همراه با رشد برند ساروبیکس"],
+    ["🎯", "رشد و یادگیری", "فرصت رشد همراه با برند ساروبیکس"],
   ];
 
   return (
@@ -223,8 +223,8 @@ export default function CollaboratePage() {
         </h1>
         {/* TODO سارا: این متن رو با لحن خودت بازنویسی کن */}
         <p style={{ fontSize: "15px", color: "#888", lineHeight: 2, marginBottom: "2rem" }}>
-          ساروبیکس امروز مسیرش رو به‌تنهایی شروع کرده، ولی به‌دنبال همکارانیه که همین مسیر رو با هم ادامه بدیم.
-          اگه به آموزش، تکنولوژی، یا ساخت محتوا علاقه داری، خوشحال می‌شیم باهات همکاری کنیم.
+          ساروبیکس امروز مسیرش رو به‌تنهایی شروع کرده، ولی به‌دنبال همکارانی هست که همین مسیر رو با هم ادامه بدیم.
+          اگه به آموزش، تکنولوژی، یا ساخت محتوا علاقه داری، خوشحال می‌شیم با هم همکاری کنیم.
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
           <button onClick={() => scrollTo("positions")} style={{
@@ -321,7 +321,7 @@ export default function CollaboratePage() {
           <form onSubmit={handleInquirySubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", background: "#fff", padding: "2rem", borderRadius: "20px", border: "1.5px solid #eee" }}>
             <div>
               <RequiredLabel text="نام و نام خانوادگی" />
-              <input required placeholder="مثلاً: سارا گمراوی" value={inquiry.name} onChange={e => { setInquiry({ ...inquiry, name: e.target.value }); setInquiryErrors({ ...inquiryErrors, name: "" }); }} style={{ ...inputStyle, border: inquiryErrors.name ? "1.5px solid #e03131" : inputStyle.border }} />
+              <input required placeholder="مثلاً: آریانا سلجوقی" value={inquiry.name} onChange={e => { setInquiry({ ...inquiry, name: e.target.value }); setInquiryErrors({ ...inquiryErrors, name: "" }); }} style={{ ...inputStyle, border: inquiryErrors.name ? "1.5px solid #e03131" : inputStyle.border }} />
               {inquiryErrors.name && <p style={errorTextStyle}>{inquiryErrors.name}</p>}
             </div>
             <div>
@@ -331,7 +331,7 @@ export default function CollaboratePage() {
             </div>
             <div>
               <RequiredLabel text="شماره موبایل" />
-              <input required placeholder="مثلاً: 09123456789" value={inquiry.phone} onChange={e => { setInquiry({ ...inquiry, phone: e.target.value }); setInquiryErrors({ ...inquiryErrors, phone: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: inquiryErrors.phone ? "1.5px solid #e03131" : inputStyle.border }} />
+              <input required placeholder="09123xxxxx9" value={inquiry.phone} onChange={e => { setInquiry({ ...inquiry, phone: e.target.value }); setInquiryErrors({ ...inquiryErrors, phone: "" }); }} style={{ ...inputStyle, direction: "ltr", textAlign: "right", border: inquiryErrors.phone ? "1.5px solid #e03131" : inputStyle.border }} />
               {inquiryErrors.phone && <p style={errorTextStyle}>{inquiryErrors.phone}</p>}
             </div>
             <div>
