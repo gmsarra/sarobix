@@ -28,8 +28,24 @@ function validatePersianName(value: string): string | null {
 function validateEmailField(value: string): string | null {
   const v = value.trim();
   if (!v) return "ایمیل الزامی است";
-  if (!EMAIL_REGEX.test(v)) return "ایمیل واردشده معتبر نیست (پیدا نشد)";
+  if (!EMAIL_REGEX.test(v)) return "ایمیل واردشده معتبر نیست";
   return null;
+}
+
+// چک دوم و دقیق‌تر: آیا دامنه‌ی ایمیل واقعاً وجود داره و می‌تونه ایمیل دریافت کنه (رکورد MX)
+async function checkEmailDomainExists(email: string): Promise<string | null> {
+  try {
+    const res = await fetch("/api/verify-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!data.valid) return data.reason || "این ایمیل پیدا نشد یا معتبر نیست";
+    return null;
+  } catch {
+    return null; // اگه خود چک fail بشه (مثلاً مشکل شبکه)، کاربر رو بلاک نمی‌کنیم، فقط از regex رد می‌شه
+  }
 }
 
 function validateIranPhone(value: string): string | null {
@@ -117,6 +133,13 @@ export default function CollaboratePage() {
 
     setInquiryLoading(true);
     try {
+      // چک دوم: آیا دامنه‌ی ایمیل واقعاً وجود داره
+      const domainErr = await checkEmailDomainExists(inquiry.email);
+      if (domainErr) {
+        setInquiryErrors({ ...errors, email: domainErr });
+        return;
+      }
+
       const res = await fetch("/api/collaborate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -144,6 +167,12 @@ export default function CollaboratePage() {
 
     setAppLoading(true);
     try {
+      const domainErr = await checkEmailDomainExists(application.email);
+      if (domainErr) {
+        setApplicationErrors({ ...errors, email: domainErr });
+        return;
+      }
+
       const res = await fetch("/api/collaborate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
