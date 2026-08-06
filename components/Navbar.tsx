@@ -1,10 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import SearchOverlay from "./SearchOverlay"; // TODO سارا: اگه مسیر فرق داره اصلاح کن
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -55,18 +59,34 @@ export default function Navbar() {
             <Link href="/about" style={linkStyle}>درباره ما</Link>
             <Link href="/collaborate" style={linkStyle}>همکاری</Link>
             <Link href="/contact" style={linkStyle}>تماس با ما</Link>
-            <button style={{ background: "none", border: "none", cursor: "pointer", color: "#E8632A", display: "flex", alignItems: "center", padding: "4px" }}>
+            <button onClick={() => setSearchOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", color: "#E8632A", display: "flex", alignItems: "center", padding: "4px" }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/> 
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
             </button>
-            <button style={{
-              fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "13px",
-              padding: "9px 22px", borderRadius: "10px",
-              background: "linear-gradient(135deg,#E8632A,#ff7a40)",
-              color: "#fff", border: "none", cursor: "pointer",
-              boxShadow: "0 4px 14px rgba(232,99,42,0.3)", whiteSpace: "nowrap",
-            }}>ورود | ثبت‌نام</button>
+
+            {session ? (
+              <div style={{ display: "flex", alignItems: "center", gap: "0.7rem" }}>
+                <Link href="/dashboard" style={{ ...linkStyle, fontWeight: 700, color: "#1A1A2E" }}>
+                  {session.user?.name?.split(" ")[0] || "داشبورد"}
+                </Link>
+                <button onClick={() => signOut({ callbackUrl: "/" })} style={{
+                  fontFamily: "Vazirmatn, sans-serif", fontWeight: 600, fontSize: "12px",
+                  padding: "7px 16px", borderRadius: "10px", border: "1.5px solid #ddd",
+                  background: "#fff", color: "#555", cursor: "pointer",
+                }}>
+                  خروج
+                </button>
+              </div>
+            ) : (
+              <Link href="/login" style={{
+                fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "13px",
+                padding: "9px 22px", borderRadius: "10px",
+                background: "linear-gradient(135deg,#E8632A,#ff7a40)",
+                color: "#fff", textDecoration: "none",
+                boxShadow: "0 4px 14px rgba(232,99,42,0.3)", whiteSpace: "nowrap",
+              }}>ورود | ثبت‌نام</Link>
+            )}
           </div>
         </div>
 
@@ -92,12 +112,22 @@ export default function Navbar() {
             <img src="/logo-main.png" alt="Sarobix" style={{ width: "55px", height: "55px", objectFit: "contain" }} />
           </Link>
 
-          <button style={{
-            fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "12px",
-            padding: "8px 16px", borderRadius: "100px",
-            background: "linear-gradient(135deg,#E8632A,#ff7a40)",
-            color: "#fff", border: "none", cursor: "pointer", zIndex: 2,
-          }}>ورود</button>
+          {session ? (
+            <Link href="/dashboard" style={{
+              fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "12px",
+              padding: "8px 16px", borderRadius: "100px", textDecoration: "none",
+              background: "#1A1A2E", color: "#fff", zIndex: 2,
+            }}>
+              {session.user?.name?.split(" ")[0] || "داشبورد"}
+            </Link>
+          ) : (
+            <Link href="/login" style={{
+              fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "12px",
+              padding: "8px 16px", borderRadius: "100px", textDecoration: "none",
+              background: "linear-gradient(135deg,#E8632A,#ff7a40)",
+              color: "#fff", zIndex: 2,
+            }}>ورود</Link>
+          )}
         </div>
 
         {menuOpen && (
@@ -105,9 +135,16 @@ export default function Navbar() {
             {[["صفحه اصلی","/"],["دوره‌های آموزشی","/courses"],["مقالات","/blog"],["درباره ما","/about"],["همکاری","/collaborate"],["تماس با ما","/contact"]].map(([label,href]) => (
               <Link key={href} href={href} onClick={() => setMenuOpen(false)} style={{ display: "block", padding: ".6rem 0", color: "#777", textDecoration: "none", fontSize: "15px", borderBottom: "1px solid #f5f5f5" }}>{label}</Link>
             ))}
+            {session ? (
+              <button onClick={() => signOut({ callbackUrl: "/" })} style={{ display: "block", width: "100%", textAlign: "right", padding: ".6rem 0", color: "#e03131", background: "none", border: "none", fontSize: "15px", cursor: "pointer" }}>خروج</button>
+            ) : (
+              <Link href="/register" onClick={() => setMenuOpen(false)} style={{ display: "block", padding: ".6rem 0", color: "#777", textDecoration: "none", fontSize: "15px" }}>ثبت‌نام</Link>
+            )}
           </div>
         )}
       </nav>
+
+      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
 
       <style>{`
         @media (max-width: 900px) {

@@ -1,6 +1,7 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Providers from "@/components/Providers";
 
 export const metadata = {
   title: "SAROBIX | هوش مصنوعی",
@@ -17,9 +18,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <Navbar />
-        {children}
-        <Footer />
+      <body>
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
+      </body>
       </body>
     </html>
   );
