@@ -8,32 +8,49 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json();
+    const { name, method, identifier, password } = await req.json();
 
-    if (!name || !email || !password) {
+    if (!name || !method || !identifier || !password) {
       return NextResponse.json({ error: "همه فیلدها الزامی است" }, { status: 400 });
     }
     if (password.length < 6) {
       return NextResponse.json({ error: "رمز عبور باید حداقل ۶ کاراکتر باشد" }, { status: 400 });
     }
+    if (method !== "email" && method !== "phone") {
+      return NextResponse.json({ error: "روش ثبت‌نام نامعتبر است" }, { status: 400 });
+    }
 
-    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedIdentifier = method === "email" ? identifier.toLowerCase().trim() : identifier.trim();
 
+    // چک اعتبار فرمت، بسته به روش انتخابی
+    if (method === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(normalizedIdentifier)) {
+        return NextResponse.json({ error: "ایمیل واردشده معتبر نیست" }, { status: 400 });
+      }
+    } else {
+      const phoneRegex = /^0\d{10}$/;
+      if (!phoneRegex.test(normalizedIdentifier)) {
+        return NextResponse.json({ error: "شماره موبایل باید ۱۱ رقم باشد و با صفر شروع شود" }, { status: 400 });
+      }
+    }
+
+    const column = method === "email" ? "email" : "phone";
     const { data: existing } = await supabase
       .from("users")
       .select("id")
-      .eq("email", normalizedEmail)
+      .eq(column, normalizedIdentifier)
       .single();
 
     if (existing) {
-      return NextResponse.json({ error: "این ایمیل قبلاً ثبت‌نام کرده است" }, { status: 409 });
+      return NextResponse.json({ error: method === "email" ? "این ایمیل قبلاً ثبت‌نام کرده است" : "این شماره قبلاً ثبت‌نام کرده است" }, { status: 409 });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
 
     const { error } = await supabase.from("users").insert({
       name,
-      email: normalizedEmail,
+      [column]: normalizedIdentifier,
       password_hash: passwordHash,
       provider: "credentials",
     });

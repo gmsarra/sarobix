@@ -6,7 +6,9 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [method, setMethod] = useState<"email" | "phone">("email");
+  const [form, setForm] = useState({ identifier: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,13 +23,13 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     const res = await signIn("credentials", {
-      email: form.email,
+      identifier: form.identifier,
       password: form.password,
       redirect: false,
     });
     setLoading(false);
     if (res?.error) {
-      setError("ایمیل یا رمز عبور اشتباه است");
+      setError(method === "email" ? "ایمیل یا رمز عبور اشتباه است" : "شماره موبایل یا رمز عبور اشتباه است");
     } else {
       router.push("/dashboard");
     }
@@ -53,13 +55,83 @@ export default function LoginPage() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "1.5rem 0", color: "#aaa", fontSize: "12px" }}>
           <div style={{ flex: 1, height: "1px", background: "#eee" }} />
-          یا با ایمیل
+          یا با ایمیل/شماره
           <div style={{ flex: 1, height: "1px", background: "#eee" }} />
         </div>
 
+        {/* Toggle بین ایمیل و شماره موبایل */}
+        <div style={{ display: "flex", gap: "8px", marginBottom: "1rem", background: "#F5F5F5", padding: "4px", borderRadius: "12px" }}>
+          <button
+            type="button"
+            onClick={() => { setMethod("email"); setForm({ ...form, identifier: "" }); }}
+            style={{
+              flex: 1, padding: "9px", borderRadius: "9px", border: "none", cursor: "pointer",
+              fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "13px",
+              background: method === "email" ? "#fff" : "transparent",
+              color: method === "email" ? "#E8632A" : "#888",
+              boxShadow: method === "email" ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+            }}
+          >
+            ایمیل
+          </button>
+          <button
+            type="button"
+            onClick={() => { setMethod("phone"); setForm({ ...form, identifier: "" }); }}
+            style={{
+              flex: 1, padding: "9px", borderRadius: "9px", border: "none", cursor: "pointer",
+              fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "13px",
+              background: method === "phone" ? "#fff" : "transparent",
+              color: method === "phone" ? "#E8632A" : "#888",
+              boxShadow: method === "phone" ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+            }}
+          >
+            شماره موبایل
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <input required type="email" placeholder="ایمیل" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} style={inputStyle} />
-          <input required type="password" placeholder="رمز عبور" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={inputStyle} />
+          <input
+            required
+            type={method === "email" ? "email" : "tel"}
+            placeholder={method === "email" ? "ایمیل" : "شماره موبایل"}
+            value={form.identifier}
+            onChange={e => setForm({ ...form, identifier: e.target.value })}
+            style={inputStyle}
+          />
+
+          <div style={{ position: "relative" }}>
+            <input
+              required
+              type={showPassword ? "text" : "password"}
+              placeholder="رمز عبور"
+              value={form.password}
+              onChange={e => setForm({ ...form, password: e.target.value })}
+              style={{ ...inputStyle, paddingLeft: "44px" }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)",
+                background: "none", border: "none", cursor: "pointer", padding: "4px",
+                color: "#999", display: "flex", alignItems: "center",
+              }}
+              aria-label={showPassword ? "مخفی کردن رمز" : "نمایش رمز"}
+            >
+              {showPassword ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </button>
+          </div>
+
           {error && <p style={{ color: "#e03131", fontSize: "13px" }}>{error}</p>}
           <button type="submit" disabled={loading} style={{
             fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "12px",

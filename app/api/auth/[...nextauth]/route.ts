@@ -13,19 +13,21 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        identifier: { label: "Email or Phone", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.identifier || !credentials?.password) return null;
 
+        const raw = credentials.identifier.trim();
+        // چه ایمیل بزنه چه شماره، هر دو ستون رو چک می‌کنیم — چون کاربر می‌تونه با هرکدوم ثبت‌نام کرده باشه
         const { data: user } = await supabase
           .from("users")
           .select("*")
-          .eq("email", credentials.email.toLowerCase().trim())
+          .or(`email.eq.${raw.toLowerCase()},phone.eq.${raw}`)
           .single();
 
-        if (!user || !user.password_hash) return null; // کاربری با این ایمیل نیست، یا فقط با گوگل ثبت‌نام کرده
+        if (!user || !user.password_hash) return null; // کاربری نیست، یا فقط با گوگل ثبت‌نام کرده
 
         const isValid = await bcrypt.compare(credentials.password, user.password_hash);
         if (!isValid) return null;
