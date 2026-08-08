@@ -55,7 +55,7 @@ export default function LoginPage() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "1.5rem 0", color: "#aaa", fontSize: "12px" }}>
           <div style={{ flex: 1, height: "1px", background: "#eee" }} />
-          یا با ایمیل/شماره
+            ایمیل/شماره
           <div style={{ flex: 1, height: "1px", background: "#eee" }} />
         </div>
 
