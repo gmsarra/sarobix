@@ -6,7 +6,8 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const SMS_API_KEY = process.env.SMS_API_KEY; // TODO سارا: بعد از ساخت حساب پیامکی (مثل Kavenegar)، این‌و اضافه کن
+const SMS_API_KEY = process.env.SMS_API_KEY;
+const SMS_SENDER_LINE = process.env.KAVENEGAR_SENDER_LINE; // TODO سارا: شماره‌خط پنل کاوه‌نگارت رو اینجا (به‌صورت env var) بذار
 
 async function sendCodeByEmail(email: string, code: string) {
   if (!RESEND_API_KEY) return false;
@@ -28,7 +29,8 @@ async function sendCodeBySms(phone: string, code: string): Promise<boolean> {
 
   try {
     const message = encodeURIComponent(`کد بازیابی رمز عبور ساروبیکس: ${code}\nاین کد تا ۱۰ دقیقه معتبر است.`);
-    const url = `https://api.kavenegar.com/v1/${SMS_API_KEY}/sms/send.json?receptor=${phone}&message=${message}`;
+    const senderParam = SMS_SENDER_LINE ? `&sender=${SMS_SENDER_LINE}` : "";
+    const url = `https://api.kavenegar.com/v1/${SMS_API_KEY}/sms/send.json?receptor=${phone}&message=${message}${senderParam}`;
     const res = await fetch(url);
     const data = await res.json();
 
