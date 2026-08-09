@@ -55,7 +55,7 @@ export default function LoginPage() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "1.5rem 0", color: "#aaa", fontSize: "12px" }}>
           <div style={{ flex: 1, height: "1px", background: "#eee" }} />
-            ایمیل/شماره
+          یا با ایمیل/شماره
           <div style={{ flex: 1, height: "1px", background: "#eee" }} />
         </div>
 
@@ -142,7 +142,11 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p style={{ textAlign: "center", fontSize: "13px", color: "#888", marginTop: "1.5rem" }}>
+        <p style={{ textAlign: "center", fontSize: "13px", marginTop: "1rem" }}>
+          <Link href="/forgot-password" style={{ color: "#888" }}>رمز عبورت رو فراموش کردی؟</Link>
+        </p>
+
+        <p style={{ textAlign: "center", fontSize: "13px", color: "#888", marginTop: "1rem" }}>
           حساب نداری؟ <Link href="/register" style={{ color: "#E8632A", fontWeight: 700 }}>ثبت‌نام کن</Link>
         </p>
       </div>
