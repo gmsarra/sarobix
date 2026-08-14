@@ -219,7 +219,7 @@
 
   /* ===== COURSES ===== */
   .courses { padding: 5rem 0; }
-  .courses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
   .course-card {
     background: var(--bg-secondary); border: 1px solid var(--border2);
     border-radius: var(--radius-lg); overflow: hidden;
@@ -243,9 +243,10 @@
   .course-thumb.icdl       { background: linear-gradient(135deg,#0a2a4e,#1a4080); }
   .course-thumb.content    { background: linear-gradient(135deg,#2a1a4e,#4a1080); }
   .course-thumb.capcut     { background: linear-gradient(135deg,#4e0a2a,#801040); }
-.course-thumb.webdesign  { background: linear-gradient(135deg,#0a4e2a,#108050); }
-.course-thumb.wordpress  { background: linear-gradient(135deg,#1a2a4e,#204080); }
-.course-thumb.seo        { background: linear-gradient(135deg,#4e2a0a,#805010); }
+  .course-thumb.webdesign  { background: linear-gradient(135deg,#0a4e2a,#108050); }
+  .course-thumb.wordpress  { background: linear-gradient(135deg,#1a2a4e,#204080); }
+  .course-thumb.seo        { background: linear-gradient(135deg,#4e2a0a,#805010); }
+  .course-thumb.python-ai { background: linear-gradient(135deg,#1e4d2b,#2d7a42); }
   .course-badge-tag {
     position: absolute; top: .7rem; right: .7rem; z-index: 2;
     font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 100px;

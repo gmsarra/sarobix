@@ -24,16 +24,20 @@ function CourseThumb({ slug, thumb, icon }: { slug: string; thumb: string; icon:
 }
 
 export default function CoursesPage() {
+  const [visibleCount, setVisibleCount] = useState(9);
+  const visibleCourses = courses.slice(0, visibleCount);
+  const hasMore = visibleCount < courses.length;
+
   return (
     <div style={{ paddingTop: "68px", minHeight: "100vh", background: "var(--bg-primary)" }}>
       <div className="container" style={{ padding: "4rem 1.5rem" }}>
         <div className="section-header">
           <span className="section-tag">دوره‌های آموزشی</span>
-          <h1>تمام دوره‌های Sarobix</h1>
+          <h1> دوره‌های Sarobix</h1>
           <p>یادگیری عملی با پروژه‌های واقعی</p>
         </div>
         <div className="courses-grid">
-          {courses.map((course) => (
+          {visibleCourses.map((course) => (
             <Link
               key={course.id}
               href={`/courses/${course.slug}`}
@@ -72,6 +76,21 @@ export default function CoursesPage() {
             </Link>
           ))}
         </div>
+
+        {hasMore && (
+          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+            <button
+              onClick={() => setVisibleCount(courses.length)}
+              style={{
+                fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px",
+                padding: "12px 32px", borderRadius: "100px", cursor: "pointer",
+                border: "1.5px solid rgba(232,99,42,0.3)", background: "#fff", color: "#E8632A",
+              }}
+            >
+              مشاهده بیشتر
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

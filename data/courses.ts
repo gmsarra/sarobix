@@ -29,6 +29,7 @@ export const courses: Course[] = [
   { id: 11, slug: "web-design", title: "طراحی سایت", desc: "طراحی و ساخت وب‌سایت از صفر با HTML، CSS و جاوااسکریپت", time: "۴۰ ساعت", level: "مبتدی+", price: "۸۰۰,۰۰۰", oldPrice: "۱,۸۰۰,۰۰۰", badge: "جدید", badgeClass: "badge-new", thumb: "webdesign", icon: "🌐", format: "آنلاین" },
   { id: 12, slug: "wordpress", title: "آموزش وردپرس", desc: "ساخت وب‌سایت حرفه‌ای با وردپرس بدون نیاز به کدنویسی", time: "۲۰ ساعت", level: "مبتدی", price: "۵۵۰,۰۰۰", oldPrice: "۱,۲۰۰,۰۰۰", badge: "جدید", badgeClass: "badge-new", thumb: "wordpress", icon: "📰", format: "آنلاین" },
   { id: 13, slug: "seo", title: "آموزش جامع سئو", desc: "بهینه‌سازی وب‌سایت برای موتورهای جستجو و افزایش رتبه در گوگل", time: "۳۰ ساعت", level: "متوسط", price: "۷۰۰,۰۰۰", oldPrice: "۱,۶۰۰,۰۰۰", badge: "جامع", badgeClass: "badge-new", thumb: "seo", icon: "📈", format: "آنلاین" },
+  { id: 14, slug: "python-for-ai", title: "پایتون برای هوش مصنوعی", desc: "یادگیری پایتون از پایه، با تمرکز روی کاربردهای هوش مصنوعی و آماده‌سازی برای یادگیری ماشین", time: "۲۵ ساعت", level: "مبتدی", price: "۵۰۰,۰۰۰", oldPrice: "۱,۲۰۰,۰۰۰", badge: "جدید", badgeClass: "badge-new", thumb: "python-ai", icon: "🐍", format: "آنلاین" },
 ];
 
 export function getCourseBySlug(slug: string): Course | undefined {

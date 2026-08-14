@@ -1,7 +1,41 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Shield, Zap, Wrench, Target, MessageCircle, RefreshCw, Briefcase } from "lucide-react";
+import { courses } from "@/data/courses"; // TODO سارا: اگه مسیر فرق داره اصلاح کن
+import { posts } from "@/data/posts"; // TODO سارا: اگه مسیر فرق داره اصلاح کن
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [newsletterContact, setNewsletterContact] = useState("");
+  const [newsletterSent, setNewsletterSent] = useState(false);
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [newsletterError, setNewsletterError] = useState("");
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterError("");
+    setNewsletterLoading(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: newsletterContact }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setNewsletterError(data.error || "خطا در ثبت");
+        setNewsletterLoading(false);
+        return;
+      }
+      setNewsletterSent(true);
+      setNewsletterContact("");
+      setTimeout(() => setNewsletterSent(false), 4000);
+    } catch {
+      setNewsletterError("خطای غیرمنتظره");
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
 
   useEffect(() => {
     const video = videoRef.current;
@@ -101,13 +135,14 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
             {[
-              ["🎓", "مدرک پایان دوره", "پس از اتمام هر دوره گواهی معتبر دریافت کنید."],
-              ["🛡️", "پشتیبانی مادام‌العمر", "با خرید هر دوره از پشتیبانی همیشگی بهره‌مند شوید."],
-              ["⚡", "کیفیت بالا", "تمامی آموزش‌ها با صوت و تصویر HD عرضه می‌شود."],
-              ["🔨", "پروژه‌محور", "آموزش با پروژه شروع و با پروژه‌های واقعی ختم می‌شه."],
-            ].map(([icon, title, desc]) => (
-              <div key={String(title)} style={{ background: "#F5F5F5", border: "1px solid #eee", borderRadius: "20px", padding: "1.8rem 1.5rem", textAlign: "center" }}>
-                <div style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>{icon}</div>
+              { Icon: Shield, title: "پشتیبانی مادام‌العمر", desc: "با خرید هر دوره از پشتیبانی همیشگی بهره‌مند شوید." },
+              { Icon: Zap, title: "کیفیت بالا", desc: "تمامی آموزش‌ها با صوت و تصویر HD عرضه می‌شود." },
+              { Icon: Wrench, title: "پروژه‌محور", desc: "آموزش با پروژه شروع و با پروژه‌های واقعی ختم می‌شه." },
+            ].map(({ Icon, title, desc }) => (
+              <div key={title} style={{ background: "#F5F5F5", border: "1px solid #eee", borderRadius: "20px", padding: "1.8rem 1.5rem", textAlign: "center" }}>
+                <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "rgba(232,99,42,0.1)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>
+                  <Icon size={22} color="#E8632A" strokeWidth={2} />
+                </div>
                 <h3 style={{ fontSize: "14px", fontWeight: 700, marginBottom: ".5rem", color: "#1A1A2E" }}>{title}</h3>
                 <p style={{ fontSize: "12px", color: "#888", lineHeight: 1.8 }}>{desc}</p>
               </div>
@@ -125,33 +160,31 @@ export default function Home() {
             <p style={{ color: "#888", fontSize: "14px" }}>یادگیری عملی با پروژه‌های واقعی</p>
             <a href="/courses" style={{ display: "inline-block", marginTop: "1rem", fontSize: "13px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "7px 20px", borderRadius: "100px", textDecoration: "none" }}>مشاهده همه ←</a>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.2rem" }}>
-            {[
-              { icon: "🧠", title: "هوش مصنوعی مقدماتی", time: "۲۰ ساعت", level: "مبتدی", price: "۶۵۰,۰۰۰", old: "۱,۵۰۰,۰۰۰", badge: "پرطرفدار", hot: true },
-              { icon: "🤖", title: "هوش مصنوعی پیشرفته", time: "۴۰ ساعت", level: "متوسط+", price: "۱,۱۰۰,۰۰۰", old: "۲,۵۰۰,۰۰۰", badge: "پیشرفته", hot: false },
-              { icon: "📊", title: "یادگیری ماشین", time: "۳۵ ساعت", level: "مبتدی+", price: "۸۵۰,۰۰۰", old: "۲,۰۰۰,۰۰۰", badge: "جدید", hot: false },
-              { icon: "🦾", title: "رباتیک و Arduino", time: "۵۵ ساعت", level: "همه سطوح", price: "۹۵۰,۰۰۰", old: "۲,۲۰۰,۰۰۰", badge: "ویژه", hot: true },
-            ].map((c) => (
-              <div key={c.title} style={{ background: "#fff", border: c.hot ? "1px solid rgba(232,99,42,0.3)" : "1px solid #eee", borderRadius: "20px", overflow: "hidden" }}>
-                <div style={{ height: "120px", background: c.hot ? "linear-gradient(135deg,#E8632A,#ff7a40)" : "linear-gradient(135deg,#1a1a4e,#2d1b69)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem", position: "relative" }}>
-                  {c.icon}
-                  <span style={{ position: "absolute", top: ".6rem", right: ".6rem", background: c.hot ? "#fff" : "rgba(255,255,255,0.2)", color: c.hot ? "#E8632A" : "#fff", fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "100px" }}>{c.badge}</span>
-                </div>
-                <div style={{ padding: "1.2rem" }}>
-                  <h3 style={{ fontSize: "14px", fontWeight: 700, marginBottom: ".4rem", color: "#1A1A2E" }}>{c.title}</h3>
-                  <div style={{ display: "flex", gap: ".8rem", fontSize: "11px", color: "#888", marginBottom: ".8rem" }}>
-                    <span>⏱ {c.time}</span><span>👤 {c.level}</span>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.2rem" }} className="mobile-col">
+            {["prompt-engineering-basics", "machine-learning", "web-design", "python-for-ai"]
+              .map((slug) => courses.find((c) => c.slug === slug))
+              .filter(Boolean)
+              .map((c) => (
+                <a key={c!.slug} href={`/courses/${c!.slug}`} style={{ background: "#fff", border: c!.badgeClass === "badge-hot" ? "1px solid rgba(232,99,42,0.3)" : "1px solid #eee", borderRadius: "20px", overflow: "hidden", textDecoration: "none", display: "block" }}>
+                  <div className={`course-thumb ${c!.thumb}`} style={{ height: "120px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem", position: "relative" }}>
+                    {c!.icon}
+                    <span style={{ position: "absolute", top: ".6rem", right: ".6rem", background: c!.badgeClass === "badge-hot" ? "#fff" : "rgba(255,255,255,0.2)", color: c!.badgeClass === "badge-hot" ? "#E8632A" : "#fff", fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "100px" }}>{c!.badge}</span>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #eee", paddingTop: ".8rem" }}>
-                    <div>
-                      <div style={{ fontSize: "11px", color: "#aaa", textDecoration: "line-through" }}>{c.old}</div>
-                      <div style={{ fontSize: "15px", fontWeight: 900, color: "#E8632A" }}>{c.price} ت</div>
+                  <div style={{ padding: "1.2rem" }}>
+                    <h3 style={{ fontSize: "14px", fontWeight: 700, marginBottom: ".4rem", color: "#1A1A2E" }}>{c!.title}</h3>
+                    <div style={{ display: "flex", gap: ".8rem", fontSize: "11px", color: "#888", marginBottom: ".8rem" }}>
+                      <span>⏱ {c!.time}</span><span>👤 {c!.level}</span>
                     </div>
-                    <a href="/courses" style={{ fontSize: "11px", fontWeight: 700, padding: "6px 14px", borderRadius: "100px", background: "rgba(232,99,42,0.1)", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", textDecoration: "none" }}>مشاهده ←</a>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #eee", paddingTop: ".8rem" }}>
+                      <div>
+                        <div style={{ fontSize: "11px", color: "#aaa", textDecoration: "line-through" }}>{c!.oldPrice}</div>
+                        <div style={{ fontSize: "15px", fontWeight: 900, color: "#E8632A" }}>{c!.price} ت</div>
+                      </div>
+                      <span style={{ fontSize: "11px", fontWeight: 700, padding: "6px 14px", borderRadius: "100px", background: "rgba(232,99,42,0.1)", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)" }}>مشاهده ←</span>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </a>
+              ))}
           </div>
         </div>
       </section>
@@ -177,13 +210,111 @@ export default function Home() {
             <p style={{ fontSize: "15px", color: "#666", marginBottom: "1.5rem", lineHeight: 2 }}>
                مهندس ارشد نرم‌افزار و مدرس دوره‌های برنامه‌نویسی، هوش مصنوعی و رباتیک <div className=""></div>
             </p>
-            {[["🎯", "تدریس عملی با پروژه‌های واقعی"], ["💬", "پشتیبانی مستقیم از دانشجویان"], ["🔄", "آپدیت مداوم محتوای دوره‌ها"]].map(([icon, text]) => (
-              <div key={String(text)} style={{ display: "flex", alignItems: "center", gap: "1rem", padding: ".8rem 1rem", background: "#F5F5F5", borderRadius: "12px", border: "1px solid #eee", marginBottom: ".8rem" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(232,99,42,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>{icon}</div>
-                <span style={{ fontSize: "14px", fontWeight: 500, color: "#1A1A2E" }}>{text}</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.2rem", marginTop: "1rem" }} className="mobile-flex-col mobile-center">
+              {/* ستون راست */}
+              <div style={{ display: "flex", flexDirection: "column", gap: ".6rem", width: "300px" }} className="mobile-full">
+                {[
+                  { Icon: Target, text: "تدریس عملی با پروژه‌های واقعی" },
+                  { Icon: RefreshCw, text: "آپدیت مداوم محتوای دوره‌ها" },
+                ].map(({ Icon, text }) => (
+                  <div key={text} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: ".6rem", padding: ".65rem .9rem", background: "#F5F5F5", borderRadius: "12px", border: "1px solid #eee" }}>
+                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "rgba(232,99,42,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Icon size={14} color="#E8632A" />
+                    </div>
+                    <span style={{ fontSize: "12px", fontWeight: 500, color: "#1A1A2E" }}>{text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* دکمه وسط */}
+              <a href="/courses" className="mobile-full" style={{
+                fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px",
+                padding: "13px 24px", borderRadius: "100px", background: "linear-gradient(135deg,#E8632A,#ff7a40)",
+                color: "#fff", textDecoration: "none", whiteSpace: "nowrap", textAlign: "center", flexShrink: 0,
+              }}>مشاهده دوره‌ها</a>
+
+              {/* ستون چپ */}
+              <div style={{ display: "flex", flexDirection: "column", gap: ".6rem", width: "300px" }} className="mobile-full">
+                {[
+                  { Icon: Briefcase, text: "ورود به بازار کار پس از اتمام دوره" },
+                  { Icon: MessageCircle, text: "پشتیبانی مستقیم از دانشجویان" },
+                ].map(({ Icon, text }) => (
+                  <div key={text} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: ".6rem", padding: ".65rem .9rem", background: "#F5F5F5", borderRadius: "12px", border: "1px solid #eee" }}>
+                    <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "rgba(232,99,42,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Icon size={14} color="#E8632A" />
+                    </div>
+                    <span style={{ fontSize: "12px", fontWeight: 500, color: "#1A1A2E" }}>{text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* LATEST ARTICLES */}
+      <section style={{ padding: "5rem 0", background: "#fff" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <span style={{ display: "inline-block", fontSize: "11px", letterSpacing: "2px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "4px 14px", borderRadius: "100px", marginBottom: "1rem" }}>وبلاگ</span>
+            <h2 style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)", fontWeight: 900, color: "#1A1A2E" }}>جدیدترین مقالات</h2>
+            <a href="/blog" style={{ display: "inline-block", marginTop: "1rem", fontSize: "13px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "7px 20px", borderRadius: "100px", textDecoration: "none" }}>مشاهده بیشتر ←</a>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1.2rem" }}>
+            {posts.slice(0, 4).map((post) => (
+              <a key={post.slug} href={`/blog/${post.slug}`} style={{ display: "block", textDecoration: "none", color: "inherit", border: "1px solid #eee", borderRadius: "20px", overflow: "hidden" }}>
+                <div style={{ height: "130px", background: "#F5F5F5", position: "relative" }}>
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                  />
+                  <span style={{ position: "absolute", top: ".6rem", right: ".6rem", fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "100px", background: "#fff", color: "#E8632A" }}>{post.category}</span>
+                </div>
+                <div style={{ padding: "1rem" }}>
+                  <p style={{ fontSize: "11px", color: "#aaa", marginBottom: "6px" }}>{post.date}</p>
+                  <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A2E", marginBottom: "6px", lineHeight: 1.8 }}>{post.title}</h3>
+                  <p style={{ fontSize: "12px", color: "#888", lineHeight: 1.8, margin: 0 }}>{post.excerpt}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section style={{ padding: "5rem 0", background: "#F5F5F5" }}>
+        <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 1.5rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <h2 style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)", fontWeight: 900, color: "#1A1A2E" }}>سوالات متداول</h2>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+            {[
+              // TODO سارا: این سوالات رو با متن واقعی خودت جایگزین کن
+              ["ساروبیکس چیست؟", "ساروبیکس یک آکادمی تخصصی آموزش برنامه‌نویسی، هوش مصنوعی و رباتیک است که توسط سارا گمراوی، مهندس ارشد نرم‌افزار، بنیان‌گذاری شده."],
+              ["دوره‌ها به چه صورت برگزار می‌شوند؟", "بیشتر دوره‌ها به‌صورت آنلاین و ضبط‌شده هستند؛ برخی دوره‌ها مثل ICDL و رباتیک به‌صورت حضوری برگزار می‌شوند."],
+              ["آیا بعد از پایان دوره گواهی دریافت می‌کنم؟", "بله، پس از اتمام موفق هر دوره، گواهی پایان دوره از طرف ساروبیکس دریافت می‌کنید."],
+              ["آیا امکان بازپرداخت وجه وجود دارد؟", "برای اطلاع از شرایط دقیق بازگشت وجه، از طریق صفحه‌ی تماس با ما با پشتیبانی در ارتباط باشید."],
+              ["برای شروع چه پیش‌نیازی لازم است؟", "اکثر دوره‌های مقدماتی نیازی به پیش‌زمینه ندارند و از صفر آموزش داده می‌شوند."],
+            ].map(([q, a], i) => (
+              <div key={i} style={{ background: "#fff", border: "1px solid #eee", borderRadius: "16px", overflow: "hidden" }}>
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  style={{
+                    width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: "1.1rem 1.3rem", background: "none", border: "none", cursor: "pointer",
+                    fontFamily: "Vazirmatn, sans-serif", fontSize: "14px", fontWeight: 700, color: "#1A1A2E", textAlign: "right",
+                  }}
+                >
+                  {q}
+                  <span style={{ fontSize: "18px", color: "#E8632A", flexShrink: 0, marginRight: "1rem" }}>{openFaq === i ? "−" : "+"}</span>
+                </button>
+                {openFaq === i && (
+                  <p style={{ padding: "0 1.3rem 1.1rem", fontSize: "13px", color: "#888", lineHeight: 2, margin: 0 }}>{a}</p>
+                )}
               </div>
             ))}
-            <a href="/courses" style={{ display: "inline-block", marginTop: "1rem", fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "15px", padding: "14px 36px", borderRadius: "100px", background: "linear-gradient(135deg,#E8632A,#ff7a40)", color: "#fff", textDecoration: "none" }}>مشاهده دوره‌ها</a>
           </div>
         </div>
       </section>
@@ -194,10 +325,28 @@ export default function Home() {
           <span style={{ display: "inline-block", fontSize: "11px", letterSpacing: "2px", color: "#E8632A", border: "1px solid rgba(232,99,42,0.3)", padding: "4px 14px", borderRadius: "100px", marginBottom: "1rem" }}>خبرنامه</span>
           <h2 style={{ fontSize: "clamp(1.4rem,3vw,2rem)", fontWeight: 900, marginBottom: ".8rem", color: "#1A1A2E" }}>از تخفیف‌ها باخبر بمان</h2>
           <p style={{ color: "#888", fontSize: "14px", marginBottom: "2rem" }}>ایمیل یا شماره‌ات رو بذار تا اول از همه باخبر بشی</p>
-          <div style={{ display: "flex", gap: "1rem", maxWidth: "480px", margin: "0 auto" }}>
-            <input type="text" placeholder="ایمیل یا شماره موبایل..." style={{ flex: 1, background: "#fff", border: "1px solid #ddd", borderRadius: "100px", padding: "13px 20px", fontFamily: "Vazirmatn, sans-serif", fontSize: "14px", outline: "none", direction: "rtl" }} />
-            <button style={{ fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px 24px", borderRadius: "100px", background: "linear-gradient(135deg,#E8632A,#ff7a40)", color: "#fff", border: "none", cursor: "pointer", flexShrink: 0 }}>عضویت ←</button>
-          </div>
+          <form onSubmit={handleNewsletterSubmit} style={{ display: "flex", gap: "1rem", maxWidth: "480px", margin: "0 auto" }} className="mobile-flex-col">
+            <input
+              type="text"
+              required
+              placeholder="ایمیل یا شماره موبایل..."
+              value={newsletterContact}
+              onChange={(e) => setNewsletterContact(e.target.value)}
+              style={{ flex: 1, background: "#fff", border: "1px solid #ddd", borderRadius: "100px", padding: "13px 20px", fontFamily: "Vazirmatn, sans-serif", fontSize: "14px", outline: "none", direction: "rtl" }}
+            />
+            <button
+              type="submit"
+              disabled={newsletterLoading}
+              style={{
+                fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "14px", padding: "13px 24px", borderRadius: "100px",
+                background: newsletterSent ? "#28a745" : "linear-gradient(135deg,#E8632A,#ff7a40)",
+                color: "#fff", border: "none", cursor: "pointer", flexShrink: 0,
+              }}
+            >
+              {newsletterSent ? "✓ ثبت شد" : newsletterLoading ? "..." : "عضویت ←"}
+            </button>
+          </form>
+          {newsletterError && <p style={{ color: "#e03131", fontSize: "13px", marginTop: "0.8rem" }}>{newsletterError}</p>}
         </div>
       </section>
 
@@ -205,7 +354,8 @@ export default function Home() {
       <style>{`
         @media (max-width: 768px) {
           .mobile-col { grid-template-columns: 1fr !important; }
-          .mobile-center { text-align: center !important; }
+          .mobile-flex-col { flex-direction: column !important; }
+          .mobile-center { text-align: center !important; justify-content: center !important; }
           .mobile-hide { display: none !important; }
           .mobile-full { width: 100% !important; }
         }
@@ -213,3 +363,5 @@ export default function Home() {
     </main>
   );
 }
+
+
