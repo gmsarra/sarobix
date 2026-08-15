@@ -339,6 +339,12 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Enamad trust seal */}
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "1.5rem 1.5rem 0" }}
+        dangerouslySetInnerHTML={{ __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=7281880&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=7281880&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd' alt='' style='cursor:pointer' code='C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'></a>` }}
+      />
+
       {/* Bottom bar */}
       <div style={{
         borderTop: "1px solid rgba(255,255,255,0.1)",
@@ -347,8 +353,10 @@ export default function Footer() {
         fontSize: "12px",
         color: "#7a7a95",
       }}>
-        © 2025 Sarobix — تمامی حقوق محفوظ است
+        © {new Date().getFullYear()} Sarobix — تمامی حقوق محفوظ است
       </div>
+
+        
 
       <style>{`
         @media (max-width: 768px) {
