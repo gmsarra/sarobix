@@ -339,22 +339,28 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Enamad trust seal */}
-      <div
-        style={{ display: "flex", justifyContent: "center", padding: "1.5rem 1.5rem 0" }}
-        dangerouslySetInnerHTML={{ __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=7281880&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=7281880&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd' alt='' style='cursor:pointer' code='C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'></a>` }}
-      />
-
-      {/* Bottom bar */}
-      <div style={{
-        borderTop: "1px solid rgba(255,255,255,0.1)",
-        padding: "1.2rem 1.5rem",
-        textAlign: "center",
-        fontSize: "12px",
-        color: "#7a7a95",
-      }}>
-        © {new Date().getFullYear()} Sarobix — تمامی حقوق محفوظ است
-      </div>
+      {/* Bottom bar with Enamad trust seal */}
+<div style={{ maxWidth: "1100px", margin: "0 auto", padding: "1.5rem" }}>
+  <div style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: "1rem",
+    border: "1px dashed rgba(201, 169, 110, 0.35)",
+    borderRadius: "14px",
+    padding: "1rem 1.5rem",
+  }}>
+    <p style={{ fontSize: "12px", color: "#7a7a95", margin: 0 }}>
+      © ۱۴۰۴ ساروبیـــــکس — تمامی حقوق محفوظ است
+    </p>
+    <div
+      dangerouslySetInnerHTML={{
+        __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=7281880&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=7281880&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd' alt='' style='cursor:pointer' code='C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'></a>`
+      }}
+    />
+  </div>
+</div>
 
         
 
