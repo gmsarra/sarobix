@@ -338,9 +338,6 @@ export default function Footer() {
         </div>
       </div>
 
-
-      <p style={{ color: "red", fontSize: "40px", textAlign: "center" }}>TEST123</p>
-
       {/* Bottom bar with Enamad trust seal */}
 <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "1.5rem" }}>
   <div style={{
