@@ -19,7 +19,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
   if (!course) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Vazirmatn, sans-serif" }}>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font)" }}>
         دوره پیدا نشد
       </div>
     );
@@ -53,102 +53,66 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
 
   const coverImagePath = `/courses/${course.slug}/cover.jpg`;
   const introVideoPath = `/courses/${course.slug}/intro.mp4`;
+  const isOnsite = course.format === "حضوری";
 
   const PurchaseCard = (
-    <div style={{ padding: "1.5rem", border: "1.5px solid #f0f0f0", borderRadius: "20px", boxShadow: "0 8px 30px rgba(0,0,0,0.06)", background: "#fff" }}>
-      <div style={{ marginBottom: "1.2rem" }}>
-        <div style={{ fontSize: "12px", color: "#aaa", textDecoration: "line-through" }}>{course.oldPrice} تومان</div>
-        <div style={{ fontSize: "1.5rem", fontWeight: 900, color: "#E8632A" }}>{course.price} تومان</div>
-      </div>
+    <div className="purchase-card">
+      <div className="purchase-price-old">{course.oldPrice} تومان</div>
+      <div className="purchase-price-new">{course.price} تومان</div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "1.2rem", fontSize: "13px", color: "#555" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>مدت دوره</span><span style={{ fontWeight: 700, color: "#1A1A2E" }}>{course.time}</span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>سطح</span><span style={{ fontWeight: 700, color: "#1A1A2E" }}>{course.level}</span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="purchase-meta-list">
+        <div className="purchase-meta-row"><span>مدت دوره</span><span className="val">{course.time}</span></div>
+        <div className="purchase-meta-row"><span>سطح</span><span className="val">{course.level}</span></div>
+        <div className="purchase-meta-row">
           <span>نوع برگزاری</span>
-          <span style={{ fontWeight: 700, color: course.format === "حضوری" ? "#C9A96E" : "#1A1A2E" }}>
-            {course.format === "حضوری" ? "📍 حضوری" : "💻 آنلاین"}
-          </span>
+          <span className={`val ${isOnsite ? "onsite" : ""}`}>{isOnsite ? "📍 حضوری" : "💻 آنلاین"}</span>
         </div>
       </div>
 
-      {error && <p style={{ color: "#e03131", fontSize: "13px", marginBottom: "1rem" }}>{error}</p>}
+      {error && <p className="purchase-error">{error}</p>}
 
-      <button
-        onClick={handleBuy}
-        disabled={loading}
-        style={{
-          width: "100%", fontFamily: "Vazirmatn, sans-serif", fontWeight: 700, fontSize: "15px",
-          padding: "14px", borderRadius: "12px", border: "none", cursor: "pointer", color: "#fff",
-          background: "linear-gradient(135deg,#E8632A,#ff7a40)",
-        }}
-      >
-        {loading ? "در حال اتصال به درگاه..." : session ? (course.format === "حضوری" ? "ثبت‌نام و رزرو جا ←" : "خرید دوره ←") : "برای خرید، ابتدا وارد شو"}
+      <button onClick={handleBuy} disabled={loading} className="purchase-btn">
+        {loading ? "در حال اتصال به درگاه..." : session ? (isOnsite ? "ثبت‌نام و رزرو جا ←" : "خرید دوره ←") : "برای خرید، ابتدا وارد شو"}
       </button>
     </div>
   );
 
   return (
-    <div style={{ background: "#fff", minHeight: "100vh", direction: "rtl", fontFamily: "Vazirmatn, sans-serif", paddingTop: "120px" }}>
+    <div style={{ background: "var(--bg-primary)", minHeight: "100vh", direction: "rtl", fontFamily: "var(--font)", paddingTop: "120px" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 1.5rem 5rem" }}>
 
-        <Link href="/courses" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "#888", textDecoration: "none", marginBottom: "1.5rem" }}>
-          → بازگشت به دوره‌ها
-        </Link>
+        <Link href="/courses" className="back-to-courses">→ بازگشت به دوره‌ها</Link>
 
         <div className="course-detail-grid" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "3rem", alignItems: "start" }}>
 
           {/* Main content column */}
           <div>
-            <div className={`course-thumb ${course.thumb}`} style={{
-              height: "260px", borderRadius: "24px", marginBottom: "1.5rem", overflow: "hidden",
-              display: "flex", alignItems: "center", justifyContent: "center", fontSize: "4rem", position: "relative",
-            }}>
+            <div className={`course-hero-media ${course.thumb}`}>
               {!coverError ? (
-                <img
-                  src={coverImagePath}
-                  alt={course.title}
-                  onError={() => setCoverError(true)}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}
-                />
+                <img src={coverImagePath} alt={course.title} onError={() => setCoverError(true)} />
               ) : (
                 course.icon
               )}
             </div>
 
-            <div style={{ display: "flex", gap: "8px", marginBottom: "1rem" }}>
-              <span style={{ display: "inline-block", fontSize: "11px", fontWeight: 700, padding: "5px 14px", borderRadius: "100px", background: "rgba(232,99,42,0.1)", color: "#E8632A" }}>
-                {course.badge}
-              </span>
-              <span style={{
-                display: "inline-block", fontSize: "11px", fontWeight: 700, padding: "5px 14px", borderRadius: "100px",
-                background: course.format === "حضوری" ? "rgba(201,169,110,0.15)" : "rgba(26,26,46,0.08)",
-                color: course.format === "حضوری" ? "#C9A96E" : "#1A1A2E",
-              }}>
-                {course.format === "حضوری" ? "📍 حضوری" : "💻 آنلاین"}
+            <div className="course-badge-row">
+              <span className="course-badge-pill primary">{course.badge}</span>
+              <span className={`course-badge-pill ${isOnsite ? "format-onsite" : "format-online"}`}>
+                {isOnsite ? "📍 حضوری" : "💻 آنلاین"}
               </span>
             </div>
 
-            <h1 style={{ fontSize: "1.8rem", fontWeight: 900, color: "#1A1A2E", marginBottom: "0.8rem" }}>{course.title}</h1>
-            <p style={{ fontSize: "15px", color: "#666", lineHeight: 2, marginBottom: "1.5rem" }}>{course.desc}</p>
+            <h1 className="course-detail-title">{course.title}</h1>
+            <p className="course-detail-desc">{course.desc}</p>
 
-            <div style={{ display: "flex", gap: "1.5rem", fontSize: "13px", color: "#888", marginBottom: "2rem" }}>
+            <div className="course-detail-meta">
               <span>⏱ {course.time}</span>
               <span>👤 سطح: {course.level}</span>
             </div>
 
             {!videoError && (
-              <div style={{ marginBottom: "2rem", borderRadius: "20px", overflow: "hidden" }}>
-                <video
-                  src={introVideoPath}
-                  controls
-                  onError={() => setVideoError(true)}
-                  style={{ width: "100%", display: "block", background: "#000" }}
-                />
+              <div className="course-video-wrap">
+                <video src={introVideoPath} controls onError={() => setVideoError(true)} />
               </div>
             )}
 
@@ -158,23 +122,17 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
             </div>
 
             <div>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#1A1A2E", marginBottom: "1.2rem" }}>سرفصل‌های دوره</h2>
+              <h2 className="curriculum-heading">سرفصل‌های دوره</h2>
               {curriculumItems.length === 0 ? (
-                <p style={{ fontSize: "14px", color: "#888" }}>سرفصل‌های کامل به‌زودی اضافه می‌شود.</p>
+                <p className="curriculum-empty">سرفصل‌های کامل به‌زودی اضافه می‌شود.</p>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+                <div className="curriculum-list">
                   {curriculumItems.map((item, i) => (
-                    <div key={i} style={{ display: "flex", gap: "1rem", padding: "1rem", background: "#F5F5F5", borderRadius: "14px" }}>
-                      <div style={{
-                        flexShrink: 0, width: "28px", height: "28px", borderRadius: "50%",
-                        background: "#E8632A", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: "12px", fontWeight: 700,
-                      }}>
-                        {i + 1}
-                      </div>
+                    <div key={i} className="curriculum-item">
+                      <div className="curriculum-num">{i + 1}</div>
                       <div>
-                        <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A2E", margin: 0 }}>{item.title}</p>
-                        <p style={{ fontSize: "13px", color: "#888", margin: "4px 0 0" }}>{item.desc}</p>
+                        <h4>{item.title}</h4>
+                        <p>{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -200,3 +158,4 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
     </div>
   );
 }
+

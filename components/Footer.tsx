@@ -338,15 +338,13 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar with Enamad trust seal */}
+      {/* Bottom bar: copyright + Enamad seal */}
 <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "1.5rem" }}>
   <div
-    className="sb-enamad-bar"
     style={{
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      flexWrap: "wrap",
       gap: "1rem",
       border: "1px dashed rgba(201, 169, 110, 0.35)",
       borderRadius: "14px",
@@ -354,17 +352,19 @@ export default function Footer() {
     }}
   >
     <p style={{ fontSize: "12px", color: "#7a7a95", margin: 0 }}>
-      © ۱۴۰۴ ساروبیـــــکس — تمامی حقوق محفوظ است
+      © ۱۴۰۵ ساروبیـــــکس — تمامی حقوق محفوظ است
     </p>
     <div
+      className="sb-enamad-logo"
       dangerouslySetInnerHTML={{
-        __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=774144&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=774144&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd' alt='نماد اعتماد الکترونیکی' style='cursor:pointer;width:44px;height:auto;display:block;'></a>`
+        __html: `<a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=774144&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=774144&Code=C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd' alt='' style='cursor:pointer' code='C3YuvPVJzd9uOZuCsM5v89mVROfMvPXd'></a>`,
       }}
     />
   </div>
 </div>
 
 <style>{`
+.sb-enamad-logo img { width: 64px; height: auto; display: block; }
   @media (max-width: 480px) {
     .sb-enamad-bar {
       flex-wrap: nowrap !important;
