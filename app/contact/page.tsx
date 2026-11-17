@@ -174,7 +174,7 @@ export default function ContactPage() {
 
 <div style={{ marginTop: "0.8rem", padding: "12px 16px", background: "#fff", borderRadius: "10px", border: "1px solid #eee" }}>
   <p style={{ fontSize: "13px", color: "#888", marginBottom: "2px" }}>شماره تماس</p>
-  <a href="tel:+98XXXXXXXXXX" style={{ fontSize: "14px", fontWeight: 600, color: "#E8632A", textDecoration: "none" }}>
+  <a href="tel:+989330709780" style={{ fontSize: "14px", fontWeight: 600, color: "#E8632A", textDecoration: "none" }}>
   ۰۹۳۳۰۷۰۹۷۸۰  </a>
 </div>
           </div>
