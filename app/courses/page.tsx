@@ -122,6 +122,9 @@ export default function CoursesPage() {
                 >
                   مشاهده بیشتر
                 </button>
+                <p style={{ fontSize: "12px", color: "#888", marginTop: "0.8rem", lineHeight: 1.9, textAlign: "center" }}>
+  با خرید، <Link href="/terms" style={{ color: "#E8632A", fontWeight: 600 }}>قوانین و مقررات</Link> و شرایط بازگشت وجه را می‌پذیرید.
+</p>
               </div>
             )}
           </div>

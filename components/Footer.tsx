@@ -66,7 +66,7 @@ export default function Footer() {
   const socials = [
     { name: "اینستاگرام", href: "https://instagram.com/sarobix.dev", color: "#E1306C" },
     { name: "تلگرام", href: "https://t.me/sarobix", color: "#27AEEF" },
-    { name: "لینکدین", href: "https://linkedin.com/company/sarobix", color: "#0077B5" },
+    { name: "لینکدین", href: "https://linkedin.com/in/sarobix", color: "#0077B5" },
     { name: "بله", href: "https://ble.ir/sarobix", color: "#28A745" },
   ];
 
@@ -223,7 +223,7 @@ export default function Footer() {
   const socials = [
     { name: "اینستاگرام", href: "https://instagram.com/sarobix.dev", color: "#E1306C" },
     { name: "تلگرام", href: "https://t.me/sarobix", color: "#27AEEF" },
-    { name: "لینکدین", href: "https://linkedin.com/company/sarobix", color: "#0077B5" },
+    { name: "لینکدین", href: "https://linkedin.com/in/sarobix", color: "#0077B5" },
     { name: "بله", href: "https://ble.ir/sarobix", color: "#28A745" },
   ];
 
@@ -241,6 +241,7 @@ export default function Footer() {
     { title: "درباره ما", href: "/about" },
     { title: "مقالات", href: "/blog" },
     { title: "تماس با ما", href: "/contact" },
+    { title: "قوانین و مقررات", href: "/terms" },
   ];
 
   return (
@@ -330,6 +331,7 @@ export default function Footer() {
                 style={{ fontSize: "13px", color: "#d0d0e0", textDecoration: "none", transition: "color 0.2s ease" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E8632A"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#d0d0e0"; }}
+          
               >
                 {l.title}
               </Link>

@@ -119,6 +119,9 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
             {/* Purchase card — only shown here on mobile */}
             <div className="course-detail-mobile-purchase" style={{ display: "none", marginBottom: "2.5rem" }}>
               {PurchaseCard}
+              +                <p style={{ fontSize: "12px", color: "#888", marginTop: "0.8rem", lineHeight: 1.9, textAlign: "center" }}>
++  با خرید، <Link href="/terms" style={{ color: "#E8632A", fontWeight: 600 }}>قوانین و مقررات</Link> و شرایط بازگشت وجه را می‌پذیرید.
++</p>
             </div>
 
             <div>
