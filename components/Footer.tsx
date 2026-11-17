@@ -338,6 +338,8 @@ export default function Footer() {
         </div>
       </div>
 
+
+   
       {/* Bottom bar: copyright + Enamad seal */}
 <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "1.5rem" }}>
   <div
@@ -352,7 +354,7 @@ export default function Footer() {
     }}
   >
     <p style={{ fontSize: "12px", color: "#7a7a95", margin: 0 }}>
-      © ۱۴۰۵ ساروبیـــــکس — تمامی حقوق محفوظ است
+      © ۱۴۰۴ ساروبیـــــکس — تمامی حقوق محفوظ است
     </p>
     <div
       className="sb-enamad-logo"

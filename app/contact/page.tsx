@@ -160,6 +160,23 @@ export default function ContactPage() {
               <p style={{ fontSize: "13px", color: "#888", marginBottom: "2px" }}>ایمیل</p>
               <p style={{ fontSize: "14px", fontWeight: 600, color: "#E8632A" }}>info@sarobix.com</p>
             </div>
+            {/* نشانی، کدپستی و تلفن — باید دقیقاً با پروفایل اینماد یکی باشد */}
+<div style={{ marginTop: "0.8rem", padding: "12px 16px", background: "#fff", borderRadius: "10px", border: "1px solid #eee" }}>
+  <p style={{ fontSize: "13px", color: "#888", marginBottom: "2px" }}>نشانی</p>
+  <p style={{ fontSize: "14px", fontWeight: 600, color: "#1A1A2E", lineHeight: 1.9 }}>
+  استان : خوزستان - شهرستان : اهواز - بخش : مرکزی - شهر : اهواز - محله : مرکز شهر - خیابان غفاری - خیابان موسوی - پلاک : ۱۹۷.۰ - طبقه : همکف  </p>
+</div>
+
+<div style={{ marginTop: "0.8rem", padding: "12px 16px", background: "#fff", borderRadius: "10px", border: "1px solid #eee" }}>
+  <p style={{ fontSize: "13px", color: "#888", marginBottom: "2px" }}>کدپستی</p>
+  <p style={{ fontSize: "14px", fontWeight: 600, color: "#1A1A2E" }}>۶۱۹۳۹۵۴۹۴۴</p>
+</div>
+
+<div style={{ marginTop: "0.8rem", padding: "12px 16px", background: "#fff", borderRadius: "10px", border: "1px solid #eee" }}>
+  <p style={{ fontSize: "13px", color: "#888", marginBottom: "2px" }}>شماره تماس</p>
+  <a href="tel:+98XXXXXXXXXX" style={{ fontSize: "14px", fontWeight: 600, color: "#E8632A", textDecoration: "none" }}>
+  ۰۹۳۳۰۷۰۹۷۸۰  </a>
+</div>
           </div>
 
           {/* Social links */}
